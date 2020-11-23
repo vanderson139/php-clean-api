@@ -1,0 +1,26 @@
+{
+  "name": "PHP Clean Code API",
+  "description": "PHP clean code architecture example",
+  "keywords": ["REST API", "PHP", "Clean Code"],
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Vanderson Lopes",
+      "email": "vanderson139@hotmail.com",
+      "role": "Creator / Main Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Api\\": "src/",
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
+}

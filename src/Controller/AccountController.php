@@ -2,7 +2,7 @@
 
 namespace Api\Controller;
 
-use Api\Factory\AccountFactory;
+use Api\Factory\UserFactory;
 
 class AccountController extends BaseController
 {
@@ -10,7 +10,7 @@ class AccountController extends BaseController
     public function balance()
     {
         $id = $this->request->getParameter('account_id', '');
-        $account = AccountFactory::getAccount()->handle($id);
+        $account = UserFactory::getAccount()->handle($id);
 
         if(empty($account)) {
             $this->response->setStatusCode(404);

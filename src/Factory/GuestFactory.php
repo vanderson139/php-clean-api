@@ -5,7 +5,7 @@ namespace Api\Factory;
 use Api\Repository\ResetRepository;
 use Api\UseCase\ResetUseCase;
 
-class ResetFactory
+class GuestFactory
 {
     public static function dropDatabase()
     {

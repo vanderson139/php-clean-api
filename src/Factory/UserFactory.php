@@ -2,12 +2,14 @@
 
 namespace Api\Factory;
 
+use Api\Repository\EventRepository;
 use Api\UseCase\CreateAccountUseCase;
+use Api\UseCase\CreateEventUseCase;
 use Api\UseCase\GetAccountUseCase;
 use Api\Repository\AccountRepository;
 use Api\UseCase\UpdateAccountUseCase;
 
-class AccountFactory
+class UserFactory
 {
     public static function getAccount()
     {
@@ -27,6 +29,13 @@ class AccountFactory
     {
         return new UpdateAccountUseCase(
             new AccountRepository()
+        );
+    }
+
+    public static function createEvent()
+    {
+        return new CreateEventUseCase(
+            new EventRepository()
         );
     }
 }

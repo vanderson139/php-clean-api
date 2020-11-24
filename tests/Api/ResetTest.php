@@ -1,8 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
+
+namespace Tests\Api;
 
 use GuzzleHttp\Client;
+use PHPUnit\Framework\TestCase;
 
-class ResetTest extends \PHPUnit\Framework\TestCase
+class ResetTest extends TestCase
 {
     public function testGetReset()
     {

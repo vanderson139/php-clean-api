@@ -1,8 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
+
+namespace Tests\Api;
 
 use GuzzleHttp\Client;
+use PHPUnit\Framework\TestCase;
 
-class AccountTest extends \PHPUnit\Framework\TestCase
+class AccountTest extends TestCase
 {
     public function testGetBalanceForNonExistingAccount()
     {

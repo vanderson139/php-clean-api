@@ -6,7 +6,7 @@ use Api\Factory\ResetFactory;
 
 class ResetController extends BaseController
 {
-    public function index()
+    public function drop()
     {
         ResetFactory::dropDatabase()->handle();
         $this->response->setStatusCode(200);

@@ -2,7 +2,7 @@
 
 return [
     ['GET', '/', ['Api\Controller\HomeController', 'index']],
-    ['GET', '/reset', ['Api\Controller\ResetController', 'index']],
+    ['POST', '/reset', ['Api\Controller\ResetController', 'drop']],
     ['GET', '/balance', ['Api\Controller\AccountController', 'balance']],
     ['POST', '/event', ['Api\Controller\EventController', 'create']]
 ];

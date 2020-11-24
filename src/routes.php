@@ -2,5 +2,6 @@
 
 return [
     ['GET', '/', ['Api\Controller\HomeController', 'index']],
-    ['GET', '/reset', ['Api\Controller\ResetController', 'index']]
+    ['GET', '/reset', ['Api\Controller\ResetController', 'index']],
+    ['GET', '/balance', ['Api\Controller\AccountController', 'balance']]
 ];

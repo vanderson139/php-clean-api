@@ -3,8 +3,8 @@
          colors="true"
          cacheResult="false">
     <testsuites>
-        <testsuite name="api/tests">
-            <directory suffix=".php">./tests/</directory>
+        <testsuite name="Api">
+            <directory suffix="Test.php">./tests/Api</directory>
         </testsuite>
     </testsuites>
 </phpunit>

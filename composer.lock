@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3769ec88964052468646484112d85673",
+    "content-hash": "d798e41920626d444900deed7f195505",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -70,6 +70,47 @@
                 }
             ],
             "time": "2020-11-10T18:47:58+00:00"
+        },
+        {
+            "name": "gabordemooij/redbean",
+            "version": "v5.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gabordemooij/redbean.git",
+                "reference": "6b589df8bcf63b9b8525c50a5c1575e20a14de1b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/6b589df8bcf63b9b8525c50a5c1575e20a14de1b",
+                "reference": "6b589df8bcf63b9b8525c50a5c1575e20a14de1b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RedBeanPHP\\": "RedBeanPHP"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Gabor de Mooij",
+                    "email": "gabor@redbeanphp.com",
+                    "homepage": "https://redbeanphp.com"
+                }
+            ],
+            "description": "RedBeanPHP ORM",
+            "homepage": "https://redbeanphp.com/",
+            "keywords": [
+                "orm"
+            ],
+            "time": "2020-10-03T14:18:27+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2132,7 +2173,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1"
+        "php": ">=7.1",
+        "ext-pdo_sqlite": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"

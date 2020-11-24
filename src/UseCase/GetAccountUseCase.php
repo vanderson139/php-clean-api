@@ -2,19 +2,26 @@
 
 namespace Api\UseCase;
 
+use Api\Adapter\AccountRepositoryInterface;
 use Api\Adapter\RepositoryInterface;
 
 class GetAccountUseCase
 {
     protected $accountRepository;
 
-    public function __construct(RepositoryInterface $accountRepository)
+    public function __construct(AccountRepositoryInterface $accountRepository)
     {
         $this->accountRepository = $accountRepository;
     }
 
     public function handle($id)
     {
-        return $this->accountRepository->find($id);
+        $account = $this->accountRepository->find('account', $id);
+
+        if(empty($account->id)) {
+            return [];
+        }
+        
+        return $account;
     }
 }

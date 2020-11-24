@@ -2,10 +2,9 @@
 
 namespace Api\UseCase;
 
-use Api\Adapter\EventRepositoryInterface;
 use Api\Adapter\ResetRepositoryInterface;
 
-class DropDatabaseUseCase
+class ResetUseCase
 {
     protected $resetRepository;
 
@@ -16,6 +15,7 @@ class DropDatabaseUseCase
 
     public function handle()
     {
-        return $this->resetRepository->drop();
+        $this->resetRepository->drop();
+        $this->resetRepository->create();
     }
 }

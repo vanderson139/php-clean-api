@@ -9,9 +9,11 @@ class BaseRepository implements RepositoryInterface
 {
     const DB_FILE = '/tmp/dbfile.db';
     
+    protected static $db;
+    
     public function __construct()
     {
-        R::setup('sqlite:'. self::DB_FILE);
+        $this->connect();
     }
 
     public function find($table, $id)
@@ -21,12 +23,36 @@ class BaseRepository implements RepositoryInterface
 
     public function save($table, $data)
     {
+        $id = null;
+        if(isset($data['id'])) {
+            $id = $data['id'];
+            unset($data['id']);
+        }
+        
         $entity = R::dispense($table);
 
         foreach ($data as $key => $value) {
             $entity->{$key} = $value;
         }
         
-        return R::store($entity);
+        $storeId = R::store($entity);
+        
+        // store method does not allow to set id
+        if(!empty($id) && $id != $storeId) {
+            R::exec("UPDATE {$table} SET id = :dataId WHERE id = :storeId", [
+                ':storeId' => $storeId,
+                ':dataId' => $id
+            ]);
+            
+            $storeId = $id;
+        }
+        
+        return $storeId;
+    }
+
+    protected function connect()
+    {
+        if(self::$db) return;
+        self::$db = R::setup('sqlite:'. self::DB_FILE);
     }
 }

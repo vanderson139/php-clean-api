@@ -3,6 +3,7 @@
 namespace Api\Repository;
 
 use Api\Adapter\ResetRepositoryInterface;
+use RedBeanPHP\R;
 
 class ResetRepository extends BaseRepository implements ResetRepositoryInterface
 {
@@ -13,5 +14,22 @@ class ResetRepository extends BaseRepository implements ResetRepositoryInterface
         }
         
         return true;
+    }
+
+    public function create()
+    {
+        $this->createAccountsTable();
+    }
+    
+    protected function createAccountsTable()
+    {
+        $sql = "
+        CREATE TABLE accounts (
+            id INTEGER PRIMARY KEY,
+            balance TEXT
+        );
+        ";
+        
+        R::exec($sql);
     }
 }

@@ -27,7 +27,6 @@ class EventTest extends TestCase
         $this->assertEquals(201, $response->getStatusCode());
         
         $expectedBody = '{"destination":{"id":"100","balance":10}}';
-        var_dump($response->getBody()->getContents());
-        $this->assertEquals($expectedBody, $response->getBody());
+        $this->assertEquals($expectedBody, $response->getBody()->getContents());
     }
 }

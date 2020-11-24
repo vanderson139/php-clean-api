@@ -6,5 +6,8 @@
         <testsuite name="Api">
             <directory suffix="Test.php">./tests/Api</directory>
         </testsuite>
+        <testsuite name="UseCase">
+            <directory suffix="Test.php">./tests/UseCase</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

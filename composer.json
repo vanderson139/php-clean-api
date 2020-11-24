@@ -14,6 +14,9 @@
     "php": ">=7.4",
     "phpunit/phpunit": "*"
   },
+  "require-dev": {
+    "heroku/heroku-buildpack-php": "*"
+  },
   "autoload": {
     "psr-4": {
       "Api\\": "src/",

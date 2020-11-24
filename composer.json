@@ -15,7 +15,8 @@
     "phpunit/phpunit": "*",
     "patricklouys/http": "~1.4",
     "nikic/fast-route": "~1.2",
-    "guzzlehttp/guzzle": "^7.2"
+    "guzzlehttp/guzzle": "^7.2",
+    "rdlowrey/auryn": "^1.4"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"

@@ -1,7 +1,9 @@
 <?php declare(strict_types = 1);
 
-$request = new \Http\HttpRequest($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER, file_get_contents('php://input'));
-$response = new \Http\HttpResponse;
+$app = include('app.php');
+
+$request = $app->make('Http\HttpRequest');
+$response = $app->make('Http\HttpResponse');
 
 $routeDefinitionCallback = function (\FastRoute\RouteCollector $r) {
     $routes = include_once(__DIR__ . '/routes.php');
@@ -24,7 +26,7 @@ switch ($routeInfo[0]) {
         $method = $routeInfo[1][1];
         $vars = $routeInfo[2];
 
-        $class = new $className($request, $response);
+        $class = $app->make($className);
         $class->$method($vars);
         break;
 }

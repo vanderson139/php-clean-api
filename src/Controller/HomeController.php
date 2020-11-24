@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Api\Controllers;
+namespace Api\Controller;
 
 class HomeController extends BaseController
 {

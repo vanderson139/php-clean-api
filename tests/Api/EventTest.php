@@ -92,4 +92,47 @@ class EventTest extends TestCase
         $expectedBody = '{"origin":{"id":"100","balance":15}}';
         $this->assertEquals($expectedBody, $response->getBody()->getContents());
     }
+
+    public function testTransferFromExistingAccount()
+    {
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/',
+            'http_errors' => false
+        ]);
+
+        $options = [
+            RequestOptions::JSON => [
+                'type' => 'transfer',
+                'origin' => '100',
+                'amount' => '15',
+                'destination' => '300',
+            ]
+        ];
+        $response = $client->post('/event', $options);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $expectedBody = '{"origin":{"id":"100","balance":0},"destination":{"id":"300","balance":15}}';
+        $this->assertEquals($expectedBody, $response->getBody()->getContents());
+    }
+
+    public function testTransferFromNonExistingAccount()
+    {
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/',
+            'http_errors' => false
+        ]);
+
+        $options = [
+            RequestOptions::JSON => [
+                'type' => 'transfer',
+                'origin' => '200',
+                'amount' => '15',
+                'destination' => '300',
+            ]
+        ];
+        $response = $client->post('/event', $options);
+
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('0', $response->getBody()->getContents());
+    }
 }

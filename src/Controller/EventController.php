@@ -29,13 +29,13 @@ class EventController extends BaseController
         $origin = $this->getAccount($post->origin);
         $destination = $this->getAccount($post->destination);
 
-        if ($post->type == 'withdraw' && empty($origin)) {
+        if (in_array($post->type, ['withdraw', 'transfer']) && empty($origin)) {
             $this->response->setStatusCode(404);
             $this->response->setContent('0');
             return;
         }
 
-        if ($post->type == 'deposit' && empty($destination)) {
+        if (in_array($post->type, ['deposit', 'transfer']) && empty($destination)) {
             $this->createAccount([
                 'id' => $post->destination,
                 'balance' => 0

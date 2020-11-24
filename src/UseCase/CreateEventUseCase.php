@@ -27,6 +27,9 @@ class CreateEventUseCase
             case 'withdraw':
                 $this->withdraw($originId, $amount);
                 break;
+            case 'transfer':
+                $this->transfer($originId, $destinationId, $amount);
+                break;
             default:
                 $this->deposit($destinationId, $amount);
                 break;
@@ -43,5 +46,11 @@ class CreateEventUseCase
     protected function withdraw($accountId, $amount)
     {
         return AccountFactory::updateAccount()->subBalance($accountId, $amount);
+    }
+
+    protected function transfer($originId, $destinationId, $amount)
+    {
+        AccountFactory::updateAccount()->subBalance($originId, $amount);
+        AccountFactory::updateAccount()->addBalance($destinationId, $amount);
     }
 }

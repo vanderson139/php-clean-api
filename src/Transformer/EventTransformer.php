@@ -10,17 +10,17 @@ class EventTransformer extends TransformerAbstract
     {
         $data = [];
         
-        if(!empty($event['destination'])) {
-            $data['destination'] = [
-                'id' => $event['destination']->id,
-                'balance' => (float)$event['destination']->balance    
-            ];
-        }
-
         if(!empty($event['origin'])) {
             $data['origin'] = [
                 'id' => $event['origin']->id,
                 'balance' => (float)$event['origin']->balance
+            ];
+        }
+
+        if(!empty($event['destination'])) {
+            $data['destination'] = [
+                'id' => $event['destination']->id,
+                'balance' => (float)$event['destination']->balance
             ];
         }
         

@@ -14,20 +14,21 @@ class CreateEventUseCase
         $this->eventRepository = $eventRepository;
     }
 
-    public function handle($type, $destination, $amount)
+    public function handle($type, $originId, $destinationId, $amount)
     {
         $eventId = $this->eventRepository->save('events', [
             'type' => $type,
-            'destination' => $destination,
+            'destination' => $destinationId,
+            'origin' => $originId,
             'amount' => $amount,
         ]);
         
         switch ($type) {
             case 'withdraw':
-                $this->withdraw($destination, $amount);
+                $this->withdraw($originId, $amount);
                 break;
             default:
-                $this->deposit($destination, $amount);
+                $this->deposit($destinationId, $amount);
                 break;
         }
         

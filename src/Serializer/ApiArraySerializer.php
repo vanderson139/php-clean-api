@@ -4,7 +4,7 @@ namespace Api\Serializer;
 
 use League\Fractal\Serializer\ArraySerializer;
 
-class DestinationArraySerializer extends ArraySerializer
+class ApiArraySerializer extends ArraySerializer
 {
     /**
      * Serialize an item.
@@ -16,7 +16,7 @@ class DestinationArraySerializer extends ArraySerializer
      */
     public function item($resourceKey, array $data)
     {
-        return ['destination' => $data];
+        return $data;
     }
 
     /**
@@ -26,6 +26,6 @@ class DestinationArraySerializer extends ArraySerializer
      */
     public function null()
     {
-        return ['destination' => []];
+        return [];
     }
 }

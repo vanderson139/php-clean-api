@@ -29,4 +29,26 @@ class EventTest extends TestCase
         $expectedBody = '{"destination":{"id":"100","balance":10}}';
         $this->assertEquals($expectedBody, $response->getBody()->getContents());
     }
+
+    public function testDepositIntoExistingAccount()
+    {
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/',
+            'http_errors' => false
+        ]);
+
+        $options = [
+            RequestOptions::JSON => [
+                'type' => 'deposit',
+                'destination' => '100',
+                'amount' => '10',
+            ]
+        ];
+        $response = $client->post('/event', $options);
+
+        $this->assertEquals(201, $response->getStatusCode());
+
+        $expectedBody = '{"destination":{"id":"100","balance":20}}';
+        $this->assertEquals($expectedBody, $response->getBody()->getContents());
+    }
 }

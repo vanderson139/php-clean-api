@@ -26,23 +26,19 @@ class EventController extends BaseController
     {
         $post = $this->getPostData();
 
-        $data = [
-            'type' => $post->type,
-            'destination' => $post->destination,
-            'amount' => $post->amount
-        ];
-
         $account = $this->getDestination($post->destination);
 
         if (empty($account)) {
-            $account = $this->createAccount([
-                'id' => $data['destination'],
-                'balance' => $data['amount']
+            $this->createAccount([
+                'id' => $post->destination,
+                'balance' => 0
             ]);
         }
 
-        EventFactory::createEvent()->handle($data);
-
+        EventFactory::createEvent()->handle($post->type, $post->destination, $post->amount);
+        
+        $account = $this->getDestination($post->destination);
+        
         $resource = new Item($account, new DestinationTransformer());
 
         $data = $this->fractal->createData($resource)->toJson();

@@ -2,10 +2,8 @@
 
 namespace Tests\UseCase;
 
-use Api\Factory\AccountFactory;
 use Api\UseCase\CreateAccountUseCase;
 use PHPUnit\Framework\TestCase;
-use RedBeanPHP\R;
 
 class AccountTest extends TestCase
 {

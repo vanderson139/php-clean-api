@@ -6,4 +6,5 @@ interface RepositoryInterface
 {
     public function find($table, $id);
     public function save($table, $data);
+    public function update($table, $data);
 }

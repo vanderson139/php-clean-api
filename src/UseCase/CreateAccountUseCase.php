@@ -15,7 +15,7 @@ class CreateAccountUseCase
 
     public function handle($data)
     {
-        $accountId = $this->accountRepository->save('accounts', $data);
-        return $this->accountRepository->find('accounts', $accountId);
+        $id = $this->accountRepository->save('accounts', $data);
+        return $this->accountRepository->find('accounts', $id);
     }
 }

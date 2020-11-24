@@ -4,7 +4,7 @@ namespace Api\UseCase;
 
 use Api\Adapter\AccountRepositoryInterface;
 
-class GetAccountUseCase
+class UpdateAccountUseCase
 {
     protected $accountRepository;
 
@@ -13,14 +13,16 @@ class GetAccountUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function handle($id)
+    public function addBalance($id, $amount)
     {
         $account = $this->accountRepository->find('accounts', $id);
 
         if(empty($account->id)) {
             return [];
         }
-        
-        return $account;
+
+        return $this->accountRepository->update($account, [
+            'balance' => $account->balance + $amount
+        ]);
     }
 }

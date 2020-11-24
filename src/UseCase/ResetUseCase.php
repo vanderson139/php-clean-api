@@ -16,6 +16,5 @@ class ResetUseCase
     public function handle()
     {
         $this->resetRepository->drop();
-        $this->resetRepository->create();
     }
 }

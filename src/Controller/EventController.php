@@ -2,6 +2,8 @@
 
 namespace Api\Controller;
 
+use Api\Enum\EventType;
+use Api\Enum\HttpResponse;
 use Api\Factory\UserFactory;
 use Api\Serializer\ApiArraySerializer;
 use Api\Transformer\EventTransformer;
@@ -17,13 +19,13 @@ class EventController extends BaseController
         $origin = $this->getAccount($post->origin);
         $destination = $this->getAccount($post->destination);
 
-        if (in_array($post->type, ['withdraw', 'transfer']) && empty($origin)) {
-            $this->response->setStatusCode(404);
+        if ($this->isOriginRequired($post->type) && empty($origin)) {
+            $this->response->setStatusCode(HttpResponse::NOT_FOUND);
             $this->response->setContent('0');
             return;
         }
 
-        if (in_array($post->type, ['deposit', 'transfer']) && empty($destination)) {
+        if ($this->isDestinationRequired($post->type) && empty($destination)) {
             $this->createAccount([
                 'id' => $post->destination,
                 'balance' => 0
@@ -34,8 +36,24 @@ class EventController extends BaseController
 
         $data = $this->formatResponse($post->origin, $post->destination);
 
-        $this->response->setStatusCode(201);
+        $this->response->setStatusCode(HttpResponse::CREATED);
         $this->response->setContent($data);
+    }
+    
+    protected function isOriginRequired($type)
+    {
+        return in_array($type, [
+           EventType::WITHDRAW, 
+           EventType::TRANSFER, 
+        ]);
+    }
+    
+    protected function isDestinationRequired($type)
+    {
+        return in_array($type, [
+            EventType::DEPOSIT,
+            EventType::TRANSFER,
+        ]);
     }
 
     protected function getAccount($id)

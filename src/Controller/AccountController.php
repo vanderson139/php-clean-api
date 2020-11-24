@@ -2,6 +2,7 @@
 
 namespace Api\Controller;
 
+use Api\Enum\HttpResponse;
 use Api\Factory\UserFactory;
 
 class AccountController extends BaseController
@@ -13,7 +14,7 @@ class AccountController extends BaseController
         $account = UserFactory::getAccount()->handle($id);
 
         if(empty($account)) {
-            $this->response->setStatusCode(404);
+            $this->response->setStatusCode(HttpResponse::NOT_FOUND);
             $this->response->setContent('0');
             return;
         }

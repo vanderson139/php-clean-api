@@ -13,6 +13,6 @@ class ResetTest extends TestCase
         $response = $client->get('/reset');
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('OK', $response->getBody());
+        $this->assertEquals('OK', $response->getBody()->getContents());
     }
 }

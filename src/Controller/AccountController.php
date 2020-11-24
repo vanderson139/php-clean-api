@@ -13,7 +13,7 @@ class AccountController extends BaseController
         $account = AccountFactory::getAccount()->handle($id);
 
         if(empty($account)) {
-            $this->response->setStatusCode(404, '0');
+            $this->response->setStatusCode(404);
             $this->response->setContent('0');
             return;
         }

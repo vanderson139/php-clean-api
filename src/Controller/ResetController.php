@@ -9,7 +9,7 @@ class ResetController extends BaseController
     public function index()
     {
         ResetFactory::dropDatabase()->handle();
-        $this->response->setStatusCode(200, 'OK');
+        $this->response->setStatusCode(200);
         $this->response->setContent('OK');
     }
 }

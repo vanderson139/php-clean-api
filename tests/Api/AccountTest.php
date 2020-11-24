@@ -16,6 +16,6 @@ class AccountTest extends TestCase
         $response = $client->get('/balance?account_id=1234');
 
         $this->assertEquals(404, $response->getStatusCode());
-        $this->assertEquals('0', $response->getBody());
+        $this->assertEquals('0', $response->getBody()->getContents());
     }
 }

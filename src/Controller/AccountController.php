@@ -3,9 +3,6 @@
 namespace Api\Controller;
 
 use Api\Factory\AccountFactory;
-use Api\Repository\AccountRepository;
-use Http\Request;
-use Http\Response;
 
 class AccountController extends BaseController
 {

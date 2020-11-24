@@ -3,7 +3,6 @@
 namespace Api\UseCase;
 
 use Api\Adapter\AccountRepositoryInterface;
-use Api\Adapter\RepositoryInterface;
 
 class GetAccountUseCase
 {

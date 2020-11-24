@@ -2,8 +2,7 @@
 
 namespace Api\Controller;
 
-use Api\Factory\AccountFactory;
-use Api\Factory\EventFactory;
+use Api\Factory\UserFactory;
 use Api\Serializer\ApiArraySerializer;
 use Api\Transformer\EventTransformer;
 use League\Fractal\Resource\Item;
@@ -31,7 +30,7 @@ class EventController extends BaseController
             ]);
         }
 
-        EventFactory::createEvent()->handle($post->type, $post->origin, $post->destination, $post->amount);
+        UserFactory::createEvent()->handle($post->type, $post->origin, $post->destination, $post->amount);
 
         $data = $this->formatResponse($post->origin, $post->destination);
 
@@ -41,12 +40,12 @@ class EventController extends BaseController
 
     protected function getAccount($id)
     {
-        return $id ? AccountFactory::getAccount()->handle($id) : null;
+        return $id ? UserFactory::getAccount()->handle($id) : null;
     }
 
     protected function createAccount($data)
     {
-        return AccountFactory::createAccount()->handle($data);
+        return UserFactory::createAccount()->handle($data);
     }
 
     protected function formatResponse($origin, $destination)

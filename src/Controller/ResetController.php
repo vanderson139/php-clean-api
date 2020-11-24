@@ -2,13 +2,13 @@
 
 namespace Api\Controller;
 
-use Api\Factory\ResetFactory;
+use Api\Factory\GuestFactory;
 
 class ResetController extends BaseController
 {
     public function drop()
     {
-        ResetFactory::dropDatabase()->handle();
+        GuestFactory::dropDatabase()->handle();
         $this->response->setStatusCode(200);
         $this->response->setContent('OK');
     }

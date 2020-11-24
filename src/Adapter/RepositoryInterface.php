@@ -4,7 +4,7 @@ namespace Api\Adapter;
 
 interface RepositoryInterface
 {
-    public function find($table, $id);
-    public function save($table, $data);
-    public function update($table, $data);
+    public function find($id);
+    public function save($data);
+    public function update($entity, $data);
 }

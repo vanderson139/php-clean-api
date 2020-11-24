@@ -6,7 +6,7 @@ use Http\Request;
 use Http\Response;
 use League\Fractal\Manager;
 
-class BaseController
+abstract class AbstractController
 {
     protected $request;
     protected $response;

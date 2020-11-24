@@ -5,24 +5,27 @@ namespace Api\Repository;
 use Api\Adapter\RepositoryInterface;
 use RedBeanPHP\R;
 
-class BaseRepository implements RepositoryInterface
+abstract class AbstractRepository implements RepositoryInterface
 {
     const DB_FILE = '/tmp/dbfile.db';
 
     protected static $db;
+    
+    protected $table;
 
     public function __construct()
     {
         $this->connect();
     }
 
-    public function find($table, $id)
+    public function find($id)
     {
-        return R::load($table, $id);
+        return R::load($this->getTable(), $id);
     }
 
-    public function save($table, $data)
+    public function save($data)
     {
+        $table = $this->getTable();
         $id = null;
         if (isset($data['id'])) {
             $id = $data['id'];
@@ -56,6 +59,11 @@ class BaseRepository implements RepositoryInterface
             $entity->{$key} = $value;
         }
         return R::store($entity);
+    }
+    
+    protected function getTable()
+    {
+        return $this->table;
     }
 
     protected function connect()

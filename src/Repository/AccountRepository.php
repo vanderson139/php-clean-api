@@ -4,6 +4,7 @@ namespace Api\Repository;
 
 use Api\Adapter\AccountRepositoryInterface;
 
-class AccountRepository extends BaseRepository implements AccountRepositoryInterface
+class AccountRepository extends AbstractRepository implements AccountRepositoryInterface
 {
+    protected $table = 'accounts';
 }

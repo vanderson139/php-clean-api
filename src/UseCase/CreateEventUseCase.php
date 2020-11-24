@@ -3,7 +3,8 @@
 namespace Api\UseCase;
 
 use Api\Adapter\EventRepositoryInterface;
-use Api\Factory\AccountFactory;
+use Api\Enum\EventType;
+use Api\Factory\UserFactory;
 
 class CreateEventUseCase
 {
@@ -16,7 +17,7 @@ class CreateEventUseCase
 
     public function handle($type, $originId, $destinationId, $amount)
     {
-        $eventId = $this->eventRepository->save('events', [
+        $eventId = $this->eventRepository->save([
             'type' => $type,
             'destination' => $destinationId,
             'origin' => $originId,
@@ -24,10 +25,10 @@ class CreateEventUseCase
         ]);
         
         switch ($type) {
-            case 'withdraw':
+            case EventType::WITHDRAW:
                 $this->withdraw($originId, $amount);
                 break;
-            case 'transfer':
+            case EventType::TRANSFER:
                 $this->transfer($originId, $destinationId, $amount);
                 break;
             default:
@@ -35,22 +36,22 @@ class CreateEventUseCase
                 break;
         }
         
-        return $this->eventRepository->find('events', $eventId);
+        return $this->eventRepository->find($eventId);
     }
 
     protected function deposit($accountId, $amount)
     {
-        return AccountFactory::updateAccount()->addBalance($accountId, $amount);
+        return UserFactory::updateAccount()->addBalance($accountId, $amount);
     }
 
     protected function withdraw($accountId, $amount)
     {
-        return AccountFactory::updateAccount()->subBalance($accountId, $amount);
+        return UserFactory::updateAccount()->subBalance($accountId, $amount);
     }
 
     protected function transfer($originId, $destinationId, $amount)
     {
-        AccountFactory::updateAccount()->subBalance($originId, $amount);
-        AccountFactory::updateAccount()->addBalance($destinationId, $amount);
+        UserFactory::updateAccount()->subBalance($originId, $amount);
+        UserFactory::updateAccount()->addBalance($destinationId, $amount);
     }
 }

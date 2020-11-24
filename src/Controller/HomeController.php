@@ -2,7 +2,7 @@
 
 namespace Api\Controller;
 
-class HomeController extends BaseController
+class HomeController extends AbstractController
 {
     public function index()
     {

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-$request = new \Http\HttpRequest($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER, 'php://input');
+$request = new \Http\HttpRequest($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER, file_get_contents('php://input'));
 $response = new \Http\HttpResponse;
 
 $routeDefinitionCallback = function (\FastRoute\RouteCollector $r) {

@@ -12,7 +12,9 @@
   ],
   "require": {
     "php": ">=7.1",
-    "phpunit/phpunit": "*"
+    "phpunit/phpunit": "*",
+    "patricklouys/http": "~1.4",
+    "nikic/fast-route": "~1.2"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"

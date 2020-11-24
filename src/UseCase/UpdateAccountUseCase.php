@@ -15,7 +15,7 @@ class UpdateAccountUseCase
 
     public function addBalance($id, $amount)
     {
-        $account = $this->accountRepository->find('accounts', $id);
+        $account = $this->accountRepository->find($id);
 
         if(empty($account->id)) {
             return [];
@@ -28,7 +28,7 @@ class UpdateAccountUseCase
 
     public function subBalance($id, $amount)
     {
-        $account = $this->accountRepository->find('accounts', $id);
+        $account = $this->accountRepository->find($id);
 
         if(empty($account->id)) {
             return [];

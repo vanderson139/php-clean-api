@@ -5,7 +5,7 @@ namespace Api\Controller;
 use Api\Enum\HttpResponse;
 use Api\Factory\GuestFactory;
 
-class ResetController extends BaseController
+class ResetController extends AbstractController
 {
     public function drop()
     {

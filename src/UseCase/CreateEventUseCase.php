@@ -17,7 +17,7 @@ class CreateEventUseCase
 
     public function handle($type, $originId, $destinationId, $amount)
     {
-        $eventId = $this->eventRepository->save('events', [
+        $eventId = $this->eventRepository->save([
             'type' => $type,
             'destination' => $destinationId,
             'origin' => $originId,
@@ -36,7 +36,7 @@ class CreateEventUseCase
                 break;
         }
         
-        return $this->eventRepository->find('events', $eventId);
+        return $this->eventRepository->find($eventId);
     }
 
     protected function deposit($accountId, $amount)

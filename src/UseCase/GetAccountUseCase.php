@@ -15,7 +15,7 @@ class GetAccountUseCase
 
     public function handle($id)
     {
-        $account = $this->accountRepository->find('accounts', $id);
+        $account = $this->accountRepository->find($id);
 
         if(empty($account->id)) {
             return [];

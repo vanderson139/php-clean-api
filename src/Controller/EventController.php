@@ -9,7 +9,7 @@ use Api\Serializer\ApiArraySerializer;
 use Api\Transformer\EventTransformer;
 use League\Fractal\Resource\Item;
 
-class EventController extends BaseController
+class EventController extends AbstractController
 {
 
     public function create()

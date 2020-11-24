@@ -5,7 +5,7 @@ namespace Api\Controller;
 use Api\Enum\HttpResponse;
 use Api\Factory\UserFactory;
 
-class AccountController extends BaseController
+class AccountController extends AbstractController
 {
 
     public function balance()

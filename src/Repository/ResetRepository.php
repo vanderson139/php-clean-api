@@ -5,7 +5,7 @@ namespace Api\Repository;
 use Api\Adapter\ResetRepositoryInterface;
 use RedBeanPHP\R;
 
-class ResetRepository extends BaseRepository implements ResetRepositoryInterface
+class ResetRepository extends AbstractRepository implements ResetRepositoryInterface
 {
     public function drop()
     {

@@ -2,7 +2,9 @@
 
 namespace Api\Repository;
 
-class AccountRepository
+use Api\Adapter\RepositoryInterface;
+
+class AccountRepository implements RepositoryInterface
 {
     public function find($id)
     {

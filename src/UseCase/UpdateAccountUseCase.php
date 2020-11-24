@@ -25,4 +25,17 @@ class UpdateAccountUseCase
             'balance' => $account->balance + $amount
         ]);
     }
+
+    public function subBalance($id, $amount)
+    {
+        $account = $this->accountRepository->find('accounts', $id);
+
+        if(empty($account->id)) {
+            return [];
+        }
+
+        return $this->accountRepository->update($account, [
+            'balance' => $account->balance - $amount
+        ]);
+    }
 }

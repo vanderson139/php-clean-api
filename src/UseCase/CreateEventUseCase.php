@@ -23,15 +23,24 @@ class CreateEventUseCase
         ]);
         
         switch ($type) {
+            case 'withdraw':
+                $this->withdraw($destination, $amount);
+                break;
             default:
                 $this->deposit($destination, $amount);
+                break;
         }
         
         return $this->eventRepository->find('events', $eventId);
     }
 
-    public function deposit($accountId, $amount)
+    protected function deposit($accountId, $amount)
     {
         return AccountFactory::updateAccount()->addBalance($accountId, $amount);
+    }
+
+    protected function withdraw($accountId, $amount)
+    {
+        return AccountFactory::updateAccount()->subBalance($accountId, $amount);
     }
 }

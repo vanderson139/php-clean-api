@@ -51,4 +51,24 @@ class EventTest extends TestCase
         $expectedBody = '{"destination":{"id":"100","balance":20}}';
         $this->assertEquals($expectedBody, $response->getBody()->getContents());
     }
+
+    public function testWithdrawFromNonExistingAccount()
+    {
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/',
+            'http_errors' => false
+        ]);
+
+        $options = [
+            RequestOptions::JSON => [
+                'type' => 'withdraw',
+                'origin' => '200',
+                'amount' => '10',
+            ]
+        ];
+        $response = $client->post('/event', $options);
+
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('0', $response->getBody()->getContents());
+    }
 }

@@ -25,10 +25,22 @@ class EventController extends BaseController
     public function create()
     {
         $post = $this->getPostData();
+        
+        if($post->origin) {
+            $origin = $this->getAccount($post->origin);
+        }
 
-        $account = $this->getDestination($post->destination);
+        if($post->destination) {
+            $destination = $this->getAccount($post->destination);
+        }
+        
+        if($post->type == 'withdraw' && empty($origin)) {
+            $this->response->setStatusCode(404);
+            $this->response->setContent('0');
+            return;
+        } 
 
-        if (empty($account)) {
+        if ($post->type == 'deposit' && empty($destination)) {
             $this->createAccount([
                 'id' => $post->destination,
                 'balance' => 0
@@ -37,7 +49,7 @@ class EventController extends BaseController
 
         EventFactory::createEvent()->handle($post->type, $post->destination, $post->amount);
         
-        $account = $this->getDestination($post->destination);
+        $account = $this->getAccount($post->destination);
         
         $resource = new Item($account, new DestinationTransformer());
 
@@ -47,7 +59,7 @@ class EventController extends BaseController
         $this->response->setContent($data);
     }
 
-    protected function getDestination($id)
+    protected function getAccount($id)
     {
         return AccountFactory::getAccount()->handle($id);
     }

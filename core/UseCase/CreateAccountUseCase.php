@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Api\UseCase;
+namespace Core\UseCase;
 
 use Core\Adapter\AccountRepositoryInterface;
 

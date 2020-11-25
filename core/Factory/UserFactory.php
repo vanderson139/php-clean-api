@@ -5,10 +5,10 @@ namespace Core\Factory;
 use Core\Repository\EventRepository;
 use Core\Repository\AccountRepository;
 
-use Api\UseCase\CreateAccountUseCase;
-use Api\UseCase\CreateEventUseCase;
-use Api\UseCase\GetAccountUseCase;
-use Api\UseCase\UpdateAccountUseCase;
+use Core\UseCase\CreateAccountUseCase;
+use Core\UseCase\CreateEventUseCase;
+use Core\UseCase\GetAccountUseCase;
+use Core\UseCase\UpdateAccountUseCase;
 
 class UserFactory
 {

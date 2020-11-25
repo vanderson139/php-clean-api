@@ -3,7 +3,7 @@
 namespace Core\Factory;
 
 use Core\Repository\ResetRepository;
-use Api\UseCase\ResetUseCase;
+use Core\UseCase\ResetUseCase;
 
 class GuestFactory
 {

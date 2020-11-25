@@ -4,7 +4,7 @@ namespace Api\Controller;
 
 use Api\Enum\EventType;
 use Api\Enum\HttpResponse;
-use Api\Factory\UserFactory;
+use Core\Factory\UserFactory;
 use Api\Serializer\ApiArraySerializer;
 use Api\Transformer\EventTransformer;
 use League\Fractal\Resource\Item;

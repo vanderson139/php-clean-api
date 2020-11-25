@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Api\Factory;
+namespace Core\Factory;
 
 use Api\Repository\EventRepository;
 use Api\UseCase\CreateAccountUseCase;

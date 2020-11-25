@@ -3,7 +3,7 @@
 namespace Api\Controller;
 
 use Api\Enum\HttpResponse;
-use Api\Factory\GuestFactory;
+use Core\Factory\GuestFactory;
 
 class ResetController extends AbstractController
 {

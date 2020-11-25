@@ -4,7 +4,7 @@ namespace Api\UseCase;
 
 use Core\Adapter\EventRepositoryInterface;
 use Api\Enum\EventType;
-use Api\Factory\UserFactory;
+use Core\Factory\UserFactory;
 
 class CreateEventUseCase
 {

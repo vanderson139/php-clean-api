@@ -19,7 +19,7 @@ $routeInfo = $dispatcher->dispatch($request->getMethod(), $request->getPath());
 switch ($routeInfo[0]) {
     case \FastRoute\Dispatcher::NOT_FOUND:
         $response->setContent('404 - Page not found');
-        $response->setStatusCode(404);
+        $response->setStatusCode(\Api\Enum\HttpResponse::NOT_FOUND);
         break;
     case \FastRoute\Dispatcher::FOUND:
         $className = $routeInfo[1][0];

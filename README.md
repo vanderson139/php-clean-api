@@ -1,5 +1,11 @@
 # PHP clean code architecture api
 
+## Instructions
+
+- **Composer Install** - If you have composer installed on your local you can directly do `composer install`.
+- **Built-in Server** - Before run the tests, make sure you have the application running on port 8000. Use `php -S localhost:8000  public/`.
+- **Unit Test** - To Run Unit tests use `composer test` or use `vendor/bin/phpunit`
+
 ## Clean code architecture
 
 - Bellow are few concepts I've focused & followed while building this architecture

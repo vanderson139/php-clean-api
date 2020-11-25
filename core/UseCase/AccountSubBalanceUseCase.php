@@ -4,7 +4,7 @@ namespace Core\UseCase;
 
 use Core\Adapter\AccountRepositoryInterface;
 
-class UpdateAccountUseCase
+class AccountSubBalanceUseCase
 {
     protected $accountRepository;
 
@@ -13,20 +13,7 @@ class UpdateAccountUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function addBalance($id, $amount)
-    {
-        $account = $this->accountRepository->find($id);
-
-        if(empty($account->id)) {
-            return [];
-        }
-
-        return $this->accountRepository->update($account, [
-            'balance' => $account->balance + $amount
-        ]);
-    }
-
-    public function subBalance($id, $amount)
+    public function handle($id, $amount)
     {
         $account = $this->accountRepository->find($id);
 

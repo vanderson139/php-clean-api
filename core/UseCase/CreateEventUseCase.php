@@ -41,17 +41,17 @@ class CreateEventUseCase
 
     protected function deposit($accountId, $amount)
     {
-        return UserFactory::updateAccount()->addBalance($accountId, $amount);
+        return UserFactory::accountAddBalance()->handle($accountId, $amount);
     }
 
     protected function withdraw($accountId, $amount)
     {
-        return UserFactory::updateAccount()->subBalance($accountId, $amount);
+        return UserFactory::accountSubBalance()->handle($accountId, $amount);
     }
 
     protected function transfer($originId, $destinationId, $amount)
     {
-        UserFactory::updateAccount()->subBalance($originId, $amount);
-        UserFactory::updateAccount()->addBalance($destinationId, $amount);
+        UserFactory::accountSubBalance()->handle($originId, $amount);
+        UserFactory::accountAddBalance()->handle($destinationId, $amount);
     }
 }

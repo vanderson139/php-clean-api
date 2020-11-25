@@ -5,10 +5,11 @@ namespace Core\Factory;
 use Core\Repository\EventRepository;
 use Core\Repository\AccountRepository;
 
+use Core\UseCase\AccountAddBalanceUseCase;
+use Core\UseCase\AccountSubBalanceUseCase;
 use Core\UseCase\CreateAccountUseCase;
 use Core\UseCase\CreateEventUseCase;
 use Core\UseCase\GetAccountUseCase;
-use Core\UseCase\UpdateAccountUseCase;
 
 class UserFactory
 {
@@ -26,9 +27,16 @@ class UserFactory
         );
     }
 
-    public static function updateAccount()
+    public static function accountAddBalance()
     {
-        return new UpdateAccountUseCase(
+        return new AccountAddBalanceUseCase(
+            new AccountRepository()
+        );
+    }
+
+    public static function accountSubBalance()
+    {
+        return new AccountSubBalanceUseCase(
             new AccountRepository()
         );
     }

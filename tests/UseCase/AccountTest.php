@@ -2,8 +2,8 @@
 
 namespace Tests\UseCase;
 
+use Core\UseCase\AccountAddBalanceUseCase;
 use Core\UseCase\CreateAccountUseCase;
-use Core\UseCase\UpdateAccountUseCase;
 use PHPUnit\Framework\TestCase;
 
 class AccountTest extends TestCase
@@ -24,11 +24,11 @@ class AccountTest extends TestCase
     {
         $data = ['balance' => 10];
         
-        $stub = $this->createMock(UpdateAccountUseCase::class);
+        $stub = $this->createMock(AccountAddBalanceUseCase::class);
    
-        $stub->method('addBalance')
+        $stub->method('handle')
             ->willReturn($data);
         
-        $this->assertEquals($data, $stub->addBalance(100, 10));
+        $this->assertEquals($data, $stub->handle(100, 10));
     }
 }

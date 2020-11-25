@@ -2,7 +2,7 @@
 
 namespace Api\Repository;
 
-use Api\Adapter\AccountRepositoryInterface;
+use Core\Adapter\AccountRepositoryInterface;
 
 class AccountRepository extends AbstractRepository implements AccountRepositoryInterface
 {

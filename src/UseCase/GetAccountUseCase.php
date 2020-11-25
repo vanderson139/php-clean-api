@@ -2,7 +2,7 @@
 
 namespace Api\UseCase;
 
-use Api\Adapter\AccountRepositoryInterface;
+use Core\Adapter\AccountRepositoryInterface;
 
 class GetAccountUseCase
 {

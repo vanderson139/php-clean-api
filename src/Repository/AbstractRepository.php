@@ -2,7 +2,7 @@
 
 namespace Api\Repository;
 
-use Api\Adapter\RepositoryInterface;
+use Core\Adapter\RepositoryInterface;
 use RedBeanPHP\R;
 
 abstract class AbstractRepository implements RepositoryInterface

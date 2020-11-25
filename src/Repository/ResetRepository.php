@@ -2,8 +2,7 @@
 
 namespace Api\Repository;
 
-use Api\Adapter\ResetRepositoryInterface;
-use RedBeanPHP\R;
+use Core\Adapter\ResetRepositoryInterface;
 
 class ResetRepository extends AbstractRepository implements ResetRepositoryInterface
 {

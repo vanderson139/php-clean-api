@@ -2,7 +2,7 @@
 
 namespace Api\Repository;
 
-use Api\Adapter\EventRepositoryInterface;
+use Core\Adapter\EventRepositoryInterface;
 
 class EventRepository extends AbstractRepository implements EventRepositoryInterface
 {

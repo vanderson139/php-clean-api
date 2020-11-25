@@ -2,7 +2,7 @@
 
 namespace Api\UseCase;
 
-use Api\Adapter\EventRepositoryInterface;
+use Core\Adapter\EventRepositoryInterface;
 use Api\Enum\EventType;
 use Api\Factory\UserFactory;
 

@@ -2,7 +2,7 @@
 
 namespace Tests\UseCase;
 
-use Api\UseCase\CreateAccountUseCase;
+use Core\UseCase\CreateAccountUseCase;
 use PHPUnit\Framework\TestCase;
 
 class AccountTest extends TestCase

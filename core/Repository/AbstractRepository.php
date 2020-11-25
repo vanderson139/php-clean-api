@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Api\Repository;
+namespace Core\Repository;
 
-use Api\Adapter\RepositoryInterface;
+use Core\Adapter\RepositoryInterface;
 use RedBeanPHP\R;
 
 abstract class AbstractRepository implements RepositoryInterface
@@ -34,9 +34,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
         $entity = R::dispense($table);
 
-        foreach ($data as $key => $value) {
-            $entity->{$key} = $value;
-        }
+        $this->fill($entity, $data);
 
         $storeId = R::store($entity);
 
@@ -55,10 +53,16 @@ abstract class AbstractRepository implements RepositoryInterface
 
     public function update($entity, $data)
     {
+        $this->fill($entity, $data);
+        return R::store($entity);
+    }
+    
+    protected function fill($entity, $data)
+    {
         foreach ($data as $key => $value) {
             $entity->{$key} = $value;
         }
-        return R::store($entity);
+        return $entity;
     }
     
     protected function getTable()

@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace Api\UseCase;
+namespace Core\UseCase;
 
-use Api\Adapter\AccountRepositoryInterface;
+use Core\Adapter\AccountRepositoryInterface;
 
 class CreateAccountUseCase
 {

@@ -1,13 +1,14 @@
 <?php declare(strict_types = 1);
 
-namespace Api\Factory;
+namespace Core\Factory;
 
-use Api\Repository\EventRepository;
-use Api\UseCase\CreateAccountUseCase;
-use Api\UseCase\CreateEventUseCase;
-use Api\UseCase\GetAccountUseCase;
-use Api\Repository\AccountRepository;
-use Api\UseCase\UpdateAccountUseCase;
+use Core\Repository\EventRepository;
+use Core\Repository\AccountRepository;
+
+use Core\UseCase\CreateAccountUseCase;
+use Core\UseCase\CreateEventUseCase;
+use Core\UseCase\GetAccountUseCase;
+use Core\UseCase\UpdateAccountUseCase;
 
 class UserFactory
 {

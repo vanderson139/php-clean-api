@@ -3,7 +3,7 @@
 namespace Api\Controller;
 
 use Api\Enum\HttpResponse;
-use Api\Factory\UserFactory;
+use Core\Factory\UserFactory;
 
 class AccountController extends AbstractController
 {

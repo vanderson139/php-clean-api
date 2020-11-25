@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace Api\UseCase;
+namespace Core\UseCase;
 
-use Api\Adapter\EventRepositoryInterface;
+use Core\Adapter\EventRepositoryInterface;
 use Api\Enum\EventType;
-use Api\Factory\UserFactory;
+use Core\Factory\UserFactory;
 
 class CreateEventUseCase
 {

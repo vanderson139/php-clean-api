@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace Api\Repository;
+namespace Core\Repository;
 
-use Api\Adapter\AccountRepositoryInterface;
+use Core\Adapter\AccountRepositoryInterface;
 
 class AccountRepository extends AbstractRepository implements AccountRepositoryInterface
 {

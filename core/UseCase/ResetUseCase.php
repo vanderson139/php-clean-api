@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace Api\UseCase;
+namespace Core\UseCase;
 
-use Api\Adapter\ResetRepositoryInterface;
+use Core\Adapter\ResetRepositoryInterface;
 
 class ResetUseCase
 {

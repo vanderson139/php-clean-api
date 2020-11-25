@@ -2,11 +2,12 @@
 
 namespace Core\Factory;
 
-use Api\Repository\EventRepository;
+use Core\Repository\EventRepository;
+use Core\Repository\AccountRepository;
+
 use Api\UseCase\CreateAccountUseCase;
 use Api\UseCase\CreateEventUseCase;
 use Api\UseCase\GetAccountUseCase;
-use Api\Repository\AccountRepository;
 use Api\UseCase\UpdateAccountUseCase;
 
 class UserFactory

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Api\Repository;
+namespace Core\Repository;
 
 use Core\Adapter\RepositoryInterface;
 use RedBeanPHP\R;

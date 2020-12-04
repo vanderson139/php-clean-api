@@ -3,76 +3,30 @@
 namespace Core\Repository;
 
 use Core\Adapter\RepositoryInterface;
-use RedBeanPHP\R;
+use Core\Service\Database;
 
 abstract class AbstractRepository implements RepositoryInterface
 {
-    const DB_FILE = '/tmp/dbfile.db';
-
-    protected static $db;
     
     protected $table;
 
-    public function __construct()
-    {
-        $this->connect();
-    }
-
     public function find($id)
     {
-        return R::load($this->getTable(), $id);
+        return Database::getConnection()->find($this->getTable(), (int)$id);
     }
 
     public function save($data)
     {
-        $table = $this->getTable();
-        $id = null;
-        if (isset($data['id'])) {
-            $id = $data['id'];
-            unset($data['id']);
-        }
-
-        $entity = R::dispense($table);
-
-        $this->fill($entity, $data);
-
-        $storeId = R::store($entity);
-
-        // store method does not allow to set id
-        if (!empty($id) && $id != $storeId) {
-            R::exec("UPDATE {$table} SET id = :dataId WHERE id = :storeId", [
-                ':storeId' => $storeId,
-                ':dataId' => $id
-            ]);
-
-            $storeId = $id;
-        }
-
-        return $storeId;
+        return Database::getConnection()->save($this->getTable(), $data);
     }
 
     public function update($entity, $data)
     {
-        $this->fill($entity, $data);
-        return R::store($entity);
-    }
-    
-    protected function fill($entity, $data)
-    {
-        foreach ($data as $key => $value) {
-            $entity->{$key} = $value;
-        }
-        return $entity;
+        return Database::getConnection()->update($this->getTable(), $entity, $data);
     }
     
     protected function getTable()
     {
         return $this->table;
-    }
-
-    protected function connect()
-    {
-        if (self::$db) return;
-        self::$db = R::setup('sqlite:' . self::DB_FILE);
     }
 }

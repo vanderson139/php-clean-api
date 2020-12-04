@@ -2,6 +2,7 @@
 
 namespace Core\Factory;
 
+use Core\Adapter\Database\ConnectionInterface;
 use Core\Repository\EventRepository;
 use Core\Repository\AccountRepository;
 

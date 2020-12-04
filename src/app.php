@@ -16,4 +16,7 @@ $app->define('Http\HttpRequest', [
 $app->alias('Http\Response', 'Http\HttpResponse');
 $app->share('Http\HttpResponse');
 
+$app->alias('Core\Adapter\Database\ConnectionInterface', 'Api\Database\ORM\RedBean');
+$app->share('Api\Database\ORM\RedBean');
+
 return $app;

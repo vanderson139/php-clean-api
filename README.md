@@ -3,7 +3,7 @@
 ## Instructions
 
 - **Composer Install** - If you have composer installed on your local you can directly do `composer install`.
-- **Built-in Server** - Before run the tests, make sure you have the application running on port 8000. Use `php -S localhost:8000  public/`.
+- **Built-in Server** - Before run the tests, make sure you have the application running on port 8000. Use `php -S localhost:8000 -t public/`.
 - **Unit Test** - To Run Unit tests use `composer test` or use `vendor/bin/phpunit`
 
 ## Clean code architecture

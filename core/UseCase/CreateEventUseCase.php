@@ -2,7 +2,9 @@
 
 namespace Core\UseCase;
 
+use Core\Adapter\Database\AccountEntityInterface;
 use Core\Adapter\Database\EntityInterface;
+use Core\Adapter\Database\EventEntityInterface;
 use Core\Adapter\Repository\EventRepositoryInterface;
 use Api\Enum\EventType;
 use Core\Factory\UserFactory;
@@ -16,43 +18,21 @@ class CreateEventUseCase
         $this->eventRepository = $eventRepository;
     }
 
-    public function handle($type, $originId, $destinationId, $amount): ?EntityInterface
+    public function handle(string $type, float $amount, ?AccountEntityInterface $destination = null, ?AccountEntityInterface $origin = null): ?EventEntityInterface
     {
         $eventId = $this->eventRepository->save([
             'type' => $type,
-            'destination' => $destinationId,
-            'origin' => $originId,
+            'destination' => $destination ? $destination->getId() : null,
+            'origin' => $origin ? $origin->getId() : null,
             'amount' => $amount,
         ]);
+
+        /** @var EventEntityInterface $event */
+        $event = $this->eventRepository->find($eventId);
         
-        switch ($type) {
-            case EventType::WITHDRAW:
-                $this->withdraw($originId, $amount);
-                break;
-            case EventType::TRANSFER:
-                $this->transfer($originId, $destinationId, $amount);
-                break;
-            default:
-                $this->deposit($destinationId, $amount);
-                break;
-        }
+        $event->setOriginAccount($origin);
+        $event->setDestinationAccount($destination);
         
-        return $this->eventRepository->find($eventId);
-    }
-
-    protected function deposit($accountId, $amount)
-    {
-        return UserFactory::accountAddBalance()->handle($accountId, $amount);
-    }
-
-    protected function withdraw($accountId, $amount)
-    {
-        return UserFactory::accountSubBalance()->handle($accountId, $amount);
-    }
-
-    protected function transfer($originId, $destinationId, $amount)
-    {
-        UserFactory::accountSubBalance()->handle($originId, $amount);
-        UserFactory::accountAddBalance()->handle($destinationId, $amount);
+        return $event;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\UseCase;
 
+use Core\Adapter\Database\AccountEntityInterface;
 use Core\Adapter\Database\EntityInterface;
 use Core\UseCase\AccountAddBalanceUseCase;
 use Core\UseCase\CreateAccountUseCase;
@@ -12,7 +13,7 @@ class AccountTest extends TestCase
     public function testCreateAccount()
     {
         $data = ['balance' => 10];
-        $entity = $this->createMock(EntityInterface::class);
+        $entity = $this->createMock(AccountEntityInterface::class);
    
         $stub = $this->createMock(CreateAccountUseCase::class);
    
@@ -24,11 +25,12 @@ class AccountTest extends TestCase
 
     public function testUpdateAccount()
     {
+        $entity = $this->createMock(AccountEntityInterface::class);
         $stub = $this->createMock(AccountAddBalanceUseCase::class);
    
         $stub->method('handle')
-            ->willReturn(1);
+            ->willReturn(true);
         
-        $this->assertEquals(1, $stub->handle(100, 10));
+        $this->assertEquals(true, $stub->handle($entity, 10));
     }
 }

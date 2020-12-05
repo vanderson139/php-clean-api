@@ -10,21 +10,24 @@ class AccountModel extends AbstractModel implements AccountEntityInterface
 
     public function getBalance(): float
     {
-        // TODO: Implement getBalance() method.
+        return (float)$this->get('balance');
     }
 
     public function setBalance(float $amount): EntityInterface
     {
-        // TODO: Implement setBalance() method.
+        $this->set('balance', $amount);
+        return $this;
     }
 
     public function addBalance(float $amount): EntityInterface
     {
-        // TODO: Implement addBalance() method.
+        $this->setBalance($this->getBalance() + $amount);
+        return $this;
     }
 
     public function subBalance(float $amount): EntityInterface
     {
-        // TODO: Implement subBalance() method.
+        $this->setBalance($this->getBalance() - $amount);
+        return $this;
     }
 }

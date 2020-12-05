@@ -4,9 +4,12 @@ namespace Api\Controller;
 
 use Api\Enum\EventType;
 use Api\Enum\HttpResponse;
+use Core\Adapter\Database\AccountEntityInterface;
+use Core\Adapter\Database\EventEntityInterface;
 use Core\Factory\UserFactory;
 use Api\Serializer\ApiArraySerializer;
 use Api\Transformer\EventTransformer;
+use http\Client\Curl\User;
 use League\Fractal\Resource\Item;
 
 class EventController extends AbstractController
@@ -26,15 +29,34 @@ class EventController extends AbstractController
         }
 
         if ($this->isDestinationRequired($post->type) && empty($destination)) {
-            $this->createAccount([
+            $destination = $this->createAccount([
                 'id' => $post->destination,
                 'balance' => 0
             ]);
         }
+        
+        switch ($post->type) {
+            case EventType::WITHDRAW:
+                $success = UserFactory::accountSubBalance()->handle($origin, (float)$post->amount);
+                break;
+            case EventType::TRANSFER:
+                $success = UserFactory::accountSubBalance()->handle($origin, (float)$post->amount);
+                $success = UserFactory::accountAddBalance()->handle($destination, (float)$post->amount);
+                break;
+            default:
+                $success = UserFactory::accountAddBalance()->handle($destination, (float)$post->amount);
+                break;
+        }
 
-        UserFactory::createEvent()->handle($post->type, $post->origin, $post->destination, $post->amount);
+        if(!$success) {
+            $this->response->setStatusCode(HttpResponse::NOT_FOUND);
+            $this->response->setContent('0');
+            return;
+        }
+        
+        $event = UserFactory::createEvent()->handle($post->type, (float)$post->amount, $destination, $origin);
 
-        $data = $this->formatResponse($post->origin, $post->destination);
+        $data = $this->formatResponse($event);
 
         $this->response->setStatusCode(HttpResponse::CREATED);
         $this->response->setContent($data);
@@ -56,22 +78,19 @@ class EventController extends AbstractController
         ]);
     }
 
-    protected function getAccount($id)
+    protected function getAccount($id): ?AccountEntityInterface
     {
         return $id ? UserFactory::getAccount()->handle($id) : null;
     }
 
-    protected function createAccount($data)
+    protected function createAccount($data): ?AccountEntityInterface
     {
         return UserFactory::createAccount()->handle($data);
     }
 
-    protected function formatResponse($origin, $destination)
+    protected function formatResponse(EventEntityInterface $event)
     {
-        $resource = new Item([
-            'destination' => $this->getAccount($destination),
-            'origin' => $this->getAccount($origin)
-        ], new EventTransformer());
+        $resource = new Item($event, new EventTransformer());
 
         $this->fractal->setSerializer(new ApiArraySerializer());
 

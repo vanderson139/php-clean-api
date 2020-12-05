@@ -9,6 +9,7 @@ use Core\Repository\AccountRepository;
 use Core\UseCase\AccountAddBalanceUseCase;
 use Core\UseCase\AccountSubBalanceUseCase;
 use Core\UseCase\CreateAccountUseCase;
+use Core\UseCase\CreateDepositEventUseCase;
 use Core\UseCase\CreateEventUseCase;
 use Core\UseCase\GetAccountUseCase;
 use GuzzleHttp\Promise\Create;
@@ -46,6 +47,13 @@ class UserFactory
     public static function createEvent(): CreateEventUseCase
     {
         return new CreateEventUseCase(
+            new EventRepository()
+        );
+    }
+
+    public static function createDepositEvent(): CreateDepositEventUseCase
+    {
+        return new CreateDepositEventUseCase(
             new EventRepository()
         );
     }

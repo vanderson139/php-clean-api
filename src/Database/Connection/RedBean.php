@@ -52,10 +52,10 @@ class RedBean implements ConnectionInterface
         return (int)$storeId;
     }
 
-    public function update(string $table, EntityInterface $entity, array $data = []): ?int
+    public function update(string $table, EntityInterface $entity): ?int
     {
         $redBean = R::dispense($table);
-        $this->fill($redBean, array_merge($entity->toArray(), $data));
+        $this->fill($redBean, $entity->toArray());
         return R::store($redBean);
     }
 

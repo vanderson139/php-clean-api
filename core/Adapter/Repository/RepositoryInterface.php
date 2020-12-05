@@ -8,5 +8,5 @@ interface RepositoryInterface
 {
     public function find($id): ?EntityInterface;
     public function save(array $data = []): ?int;
-    public function update(EntityInterface $entity, array $data = []): ?int;
+    public function update(EntityInterface $entity): ?int;
 }

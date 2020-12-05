@@ -21,9 +21,9 @@ abstract class AbstractRepository implements RepositoryInterface
         return Database::getConnection()->save($this->getTable(), $data);
     }
 
-    public function update(EntityInterface $entity, array $data = []): ?int
+    public function update(EntityInterface $entity): ?int
     {
-        return Database::getConnection()->update($this->getTable(), $entity, $data);
+        return Database::getConnection()->update($this->getTable(), $entity);
     }
     
     protected function getTable(): string

@@ -2,7 +2,8 @@
 
 namespace Core\UseCase;
 
-use Core\Adapter\AccountRepositoryInterface;
+use Core\Adapter\Database\AccountEntityInterface;
+use Core\Adapter\Repository\AccountRepositoryInterface;
 
 class GetAccountUseCase
 {
@@ -13,14 +14,8 @@ class GetAccountUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function handle($id)
+    public function execute(int $id): ?AccountEntityInterface
     {
-        $account = $this->accountRepository->find($id);
-
-        if(empty($account->id)) {
-            return [];
-        }
-        
-        return $account;
+        return $this->accountRepository->find($id);
     }
 }

@@ -2,25 +2,26 @@
 
 namespace Api\Transformer;
 
+use Core\Adapter\Database\EventEntityInterface;
 use League\Fractal\TransformerAbstract;
 
 class EventTransformer extends TransformerAbstract
 {
-    public function transform($event)
+    public function transform(EventEntityInterface $event)
     {
         $data = [];
         
-        if(!empty($event['origin'])) {
+        if($event->getOriginAccount()) {
             $data['origin'] = [
-                'id' => $event['origin']->id,
-                'balance' => (float)$event['origin']->balance
+                'id' => (string)$event->getOriginAccount()->getId(),
+                'balance' => $event->getOriginAccount()->getBalance()
             ];
         }
 
-        if(!empty($event['destination'])) {
+        if($event->getDestinationAccount()) {
             $data['destination'] = [
-                'id' => $event['destination']->id,
-                'balance' => (float)$event['destination']->balance
+                'id' => (string)$event->getDestinationAccount()->getId(),
+                'balance' => $event->getDestinationAccount()->getBalance()
             ];
         }
         

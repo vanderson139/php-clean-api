@@ -2,8 +2,11 @@
 
 namespace Api\Controller;
 
+use Api\Database\EventModel;
 use Api\Enum\EventType;
 use Api\Enum\HttpResponse;
+use Core\Adapter\Database\AccountEntityInterface;
+use Core\Adapter\Database\EventEntityInterface;
 use Core\Factory\UserFactory;
 use Api\Serializer\ApiArraySerializer;
 use Api\Transformer\EventTransformer;
@@ -16,8 +19,7 @@ class EventController extends AbstractController
     {
         $post = $this->getPostData();
 
-        $origin = $this->getAccount($post->origin);
-        $destination = $this->getAccount($post->destination);
+        $origin = $this->getAccount((int)$post->origin);
 
         if ($this->isOriginRequired($post->type) && empty($origin)) {
             $this->response->setStatusCode(HttpResponse::NOT_FOUND);
@@ -25,53 +27,46 @@ class EventController extends AbstractController
             return;
         }
 
-        if ($this->isDestinationRequired($post->type) && empty($destination)) {
-            $this->createAccount([
-                'id' => $post->destination,
-                'balance' => 0
-            ]);
+        $event = (new EventModel())
+            ->setType($post->type)
+            ->setOrigin((int)$post->origin)
+            ->setDestination((int)$post->destination)
+            ->setAmount((float)$post->amount);
+
+        switch ($post->type) {
+            case EventType::WITHDRAW:
+                UserFactory::makeWithdraw()->execute($event);
+                break;
+            case EventType::TRANSFER:
+                UserFactory::makeTransfer()->execute($event);
+                break;
+            default:
+                UserFactory::makeDeposit()->execute($event);
+                break;
         }
 
-        UserFactory::createEvent()->handle($post->type, $post->origin, $post->destination, $post->amount);
-
-        $data = $this->formatResponse($post->origin, $post->destination);
+        $data = $this->formatResponse($event);
 
         $this->response->setStatusCode(HttpResponse::CREATED);
         $this->response->setContent($data);
     }
-    
-    protected function isOriginRequired($type)
+
+    protected function isOriginRequired($type): bool
     {
         return in_array($type, [
-           EventType::WITHDRAW, 
-           EventType::TRANSFER, 
-        ]);
-    }
-    
-    protected function isDestinationRequired($type)
-    {
-        return in_array($type, [
-            EventType::DEPOSIT,
+            EventType::WITHDRAW,
             EventType::TRANSFER,
         ]);
     }
 
-    protected function getAccount($id)
+    protected function getAccount(int $id = null): ?AccountEntityInterface
     {
-        return $id ? UserFactory::getAccount()->handle($id) : null;
+        return $id ? UserFactory::getAccount()->execute($id) : null;
     }
 
-    protected function createAccount($data)
+    protected function formatResponse(EventEntityInterface $event): string
     {
-        return UserFactory::createAccount()->handle($data);
-    }
-
-    protected function formatResponse($origin, $destination)
-    {
-        $resource = new Item([
-            'destination' => $this->getAccount($destination),
-            'origin' => $this->getAccount($origin)
-        ], new EventTransformer());
+        $resource = new Item($event, new EventTransformer());
 
         $this->fractal->setSerializer(new ApiArraySerializer());
 

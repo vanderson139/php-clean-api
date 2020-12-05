@@ -2,7 +2,7 @@
 
 namespace Core\UseCase;
 
-use Core\Adapter\ResetRepositoryInterface;
+use Core\Adapter\Repository\ResetRepositoryInterface;
 
 class ResetUseCase
 {
@@ -13,7 +13,7 @@ class ResetUseCase
         $this->resetRepository = $resetRepository;
     }
 
-    public function handle()
+    public function execute()
     {
         $this->resetRepository->drop();
     }

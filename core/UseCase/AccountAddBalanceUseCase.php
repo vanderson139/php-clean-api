@@ -2,7 +2,8 @@
 
 namespace Core\UseCase;
 
-use Core\Adapter\AccountRepositoryInterface;
+use Core\Adapter\Database\AccountEntityInterface;
+use Core\Adapter\Repository\AccountRepositoryInterface;
 
 class AccountAddBalanceUseCase
 {
@@ -13,16 +14,10 @@ class AccountAddBalanceUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function handle($id, $amount)
+    public function execute(AccountEntityInterface $account, float $amount): bool
     {
-        $account = $this->accountRepository->find($id);
+        $account->addBalance($amount);
 
-        if(empty($account->id)) {
-            return [];
-        }
-
-        return $this->accountRepository->update($account, [
-            'balance' => $account->balance + $amount
-        ]);
+        return (bool)$this->accountRepository->update($account);
     }
 }

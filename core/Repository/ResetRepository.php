@@ -2,16 +2,13 @@
 
 namespace Core\Repository;
 
-use Core\Adapter\ResetRepositoryInterface;
+use Core\Adapter\Repository\ResetRepositoryInterface;
+use Core\Service\Database;
 
 class ResetRepository extends AbstractRepository implements ResetRepositoryInterface
 {
-    public function drop()
+    public function drop(): bool
     {
-        if(file_exists(self::DB_FILE)) {
-            unlink(self::DB_FILE);
-        }
-        
-        return true;
+        return Database::getConnection()->reset();
     }
 }

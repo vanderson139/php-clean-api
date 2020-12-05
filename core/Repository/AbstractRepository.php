@@ -2,77 +2,32 @@
 
 namespace Core\Repository;
 
-use Core\Adapter\RepositoryInterface;
-use RedBeanPHP\R;
+use Core\Adapter\Database\EntityInterface;
+use Core\Adapter\Repository\RepositoryInterface;
+use Core\Service\Database;
 
 abstract class AbstractRepository implements RepositoryInterface
 {
-    const DB_FILE = '/tmp/dbfile.db';
-
-    protected static $db;
     
     protected $table;
 
-    public function __construct()
+    public function find(int $id): ?EntityInterface
     {
-        $this->connect();
+        return Database::getConnection()->find($this->getTable(), $id);
     }
 
-    public function find($id)
+    public function save(array $data = []): ?int
     {
-        return R::load($this->getTable(), $id);
+        return Database::getConnection()->save($this->getTable(), $data);
     }
 
-    public function save($data)
+    public function update(EntityInterface $entity): ?int
     {
-        $table = $this->getTable();
-        $id = null;
-        if (isset($data['id'])) {
-            $id = $data['id'];
-            unset($data['id']);
-        }
-
-        $entity = R::dispense($table);
-
-        $this->fill($entity, $data);
-
-        $storeId = R::store($entity);
-
-        // store method does not allow to set id
-        if (!empty($id) && $id != $storeId) {
-            R::exec("UPDATE {$table} SET id = :dataId WHERE id = :storeId", [
-                ':storeId' => $storeId,
-                ':dataId' => $id
-            ]);
-
-            $storeId = $id;
-        }
-
-        return $storeId;
-    }
-
-    public function update($entity, $data)
-    {
-        $this->fill($entity, $data);
-        return R::store($entity);
+        return Database::getConnection()->update($this->getTable(), $entity);
     }
     
-    protected function fill($entity, $data)
-    {
-        foreach ($data as $key => $value) {
-            $entity->{$key} = $value;
-        }
-        return $entity;
-    }
-    
-    protected function getTable()
+    protected function getTable(): string
     {
         return $this->table;
-    }
-
-    protected function connect()
-    {
-        if (self::$db) return;
-        self::$db = R::setup('sqlite:' . self::DB_FILE);
     }
 }

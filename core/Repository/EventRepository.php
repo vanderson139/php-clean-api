@@ -2,7 +2,7 @@
 
 namespace Core\Repository;
 
-use Core\Adapter\EventRepositoryInterface;
+use Core\Adapter\Repository\EventRepositoryInterface;
 
 class EventRepository extends AbstractRepository implements EventRepositoryInterface
 {

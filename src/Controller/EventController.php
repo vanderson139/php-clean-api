@@ -2,7 +2,7 @@
 
 namespace Api\Controller;
 
-use Api\Database\AccountModel;
+use Api\Database\EventModel;
 use Api\Enum\EventType;
 use Api\Enum\HttpResponse;
 use Core\Adapter\Database\AccountEntityInterface;
@@ -10,9 +10,6 @@ use Core\Adapter\Database\EventEntityInterface;
 use Core\Factory\UserFactory;
 use Api\Serializer\ApiArraySerializer;
 use Api\Transformer\EventTransformer;
-use Core\Service\EventHandler\DepositEventHandler;
-use Core\Service\EventHandler\WithdrawEventHandler;
-use Core\Service\EventManager;
 use League\Fractal\Resource\Item;
 
 class EventController extends AbstractController
@@ -22,8 +19,7 @@ class EventController extends AbstractController
     {
         $post = $this->getPostData();
 
-        $origin = $this->getAccount($post->origin);
-        $destination = $this->getAccount($post->destination);
+        $origin = $this->getAccount((int)$post->origin);
 
         if ($this->isOriginRequired($post->type) && empty($origin)) {
             $this->response->setStatusCode(HttpResponse::NOT_FOUND);
@@ -31,62 +27,41 @@ class EventController extends AbstractController
             return;
         }
 
-        if ($this->isDestinationRequired($post->type) && empty($destination)) {
-            $destination = $this->createAccount([
-                'id' => $post->destination,
-                'balance' => 0
-            ]);
-        }
-        
-        $eventManager = new EventManager();
-        
+        $event = (new EventModel())
+            ->setType($post->type)
+            ->setOrigin((int)$post->origin)
+            ->setDestination((int)$post->destination)
+            ->setAmount((float)$post->amount);
+
         switch ($post->type) {
             case EventType::WITHDRAW:
-                $eventManager->addHandler(new WithdrawEventHandler());
+                UserFactory::makeWithdraw()->execute($event);
                 break;
             case EventType::TRANSFER:
-                $eventManager->addHandler(new WithdrawEventHandler())
-                             ->addHandler(new DepositEventHandler());
+                UserFactory::makeTransfer()->execute($event);
                 break;
             default:
-                $eventManager->addHandler(new DepositEventHandler());
+                UserFactory::makeDeposit()->execute($event);
                 break;
         }
-        
-        $event = UserFactory::createEvent()->execute($post->type, (float)$post->amount, $destination, $origin);
-        
-        $eventManager->process($event);
 
         $data = $this->formatResponse($event);
 
         $this->response->setStatusCode(HttpResponse::CREATED);
         $this->response->setContent($data);
     }
-    
+
     protected function isOriginRequired($type): bool
     {
         return in_array($type, [
-           EventType::WITHDRAW, 
-           EventType::TRANSFER, 
-        ]);
-    }
-    
-    protected function isDestinationRequired($type)
-    {
-        return in_array($type, [
-            EventType::DEPOSIT,
+            EventType::WITHDRAW,
             EventType::TRANSFER,
         ]);
     }
 
-    protected function getAccount($id): ?AccountEntityInterface
+    protected function getAccount(int $id = null): ?AccountEntityInterface
     {
         return $id ? UserFactory::getAccount()->execute($id) : null;
-    }
-
-    protected function createAccount($data): ?AccountEntityInterface
-    {
-        return UserFactory::createAccount()->execute(new AccountModel($data));
     }
 
     protected function formatResponse(EventEntityInterface $event): string

@@ -4,7 +4,6 @@ namespace Core\UseCase;
 
 use Core\Adapter\Database\AccountEntityInterface;
 use Core\Adapter\Repository\AccountRepositoryInterface;
-use Core\Adapter\Database\EntityInterface;
 
 class CreateAccountUseCase
 {
@@ -15,9 +14,10 @@ class CreateAccountUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function execute(AccountEntityInterface $account): ?AccountEntityInterface
+    public function execute(array $data = []): ?AccountEntityInterface
     {
-        $id = $this->accountRepository->save($account->toArray());
+        $data = array_merge($data, ['balance' => 0]);
+        $id = $this->accountRepository->save($data);
         return $this->accountRepository->find($id);
     }
 }

@@ -14,14 +14,13 @@ class AccountTest extends TestCase
     public function testCreateAccount()
     {
         $data = ['balance' => 10];
-        $entity = new AccountModel($data);
-   
+        $entity = $this->createMock(AccountEntityInterface::class);
         $stub = $this->createMock(CreateAccountUseCase::class);
    
         $stub->method('execute')
             ->willReturn($entity);
    
-        $this->assertEquals($entity, $stub->execute($entity));
+        $this->assertEquals($entity, $stub->execute($data));
     }
 
     public function testUpdateAccount()

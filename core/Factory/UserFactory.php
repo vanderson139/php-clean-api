@@ -2,17 +2,19 @@
 
 namespace Core\Factory;
 
-use Core\Adapter\Database\ConnectionInterface;
 use Core\Repository\EventRepository;
 use Core\Repository\AccountRepository;
+
+use Core\Service\EventManager;
 
 use Core\UseCase\AccountAddBalanceUseCase;
 use Core\UseCase\AccountSubBalanceUseCase;
 use Core\UseCase\CreateAccountUseCase;
-use Core\UseCase\CreateDepositEventUseCase;
 use Core\UseCase\CreateEventUseCase;
 use Core\UseCase\GetAccountUseCase;
-use GuzzleHttp\Promise\Create;
+use Core\UseCase\MakeDepositUseCase;
+use Core\UseCase\MakeTransferUseCase;
+use Core\UseCase\MakeWithdrawUseCase;
 
 class UserFactory
 {
@@ -51,10 +53,24 @@ class UserFactory
         );
     }
 
-    public static function createDepositEvent(): CreateDepositEventUseCase
+    public static function makeDeposit(): MakeDepositUseCase
     {
-        return new CreateDepositEventUseCase(
-            new EventRepository()
+        return new MakeDepositUseCase(
+            new EventManager()
+        );
+    }
+
+    public static function makeWithdraw(): MakeWithdrawUseCase
+    {
+        return new MakeWithdrawUseCase(
+            new EventManager()
+        );
+    }
+
+    public static function makeTransfer(): MakeTransferUseCase
+    {
+        return new MakeTransferUseCase(
+            new EventManager()
         );
     }
 }

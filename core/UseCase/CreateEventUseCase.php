@@ -2,7 +2,6 @@
 
 namespace Core\UseCase;
 
-use Core\Adapter\Database\AccountEntityInterface;
 use Core\Adapter\Database\EventEntityInterface;
 use Core\Adapter\Repository\EventRepositoryInterface;
 
@@ -15,20 +14,14 @@ class CreateEventUseCase
         $this->eventRepository = $eventRepository;
     }
 
-    public function execute(string $type, float $amount, ?AccountEntityInterface $destination = null, ?AccountEntityInterface $origin = null): ?EventEntityInterface
+    public function execute(EventEntityInterface $event): ?EventEntityInterface
     {
-        $eventId = $this->eventRepository->save([
-            'type' => $type,
-            'destination' => $destination ? $destination->getId() : null,
-            'origin' => $origin ? $origin->getId() : null,
-            'amount' => $amount,
-        ]);
+        $eventId = $this->eventRepository->save($event->toArray());
 
         /** @var EventEntityInterface $event */
         $event = $this->eventRepository->find($eventId);
         
-        $event->setOriginAccount($origin);
-        $event->setDestinationAccount($destination);
+        $event->setId($eventId);
         
         return $event;
     }

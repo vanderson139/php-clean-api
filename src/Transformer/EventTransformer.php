@@ -13,14 +13,14 @@ class EventTransformer extends TransformerAbstract
         
         if($event->getOriginAccount()) {
             $data['origin'] = [
-                'id' => $event->getOriginAccount()->getId(),
+                'id' => (string)$event->getOriginAccount()->getId(),
                 'balance' => $event->getOriginAccount()->getBalance()
             ];
         }
 
         if($event->getDestinationAccount()) {
             $data['destination'] = [
-                'id' => $event->getDestinationAccount()->getId(),
+                'id' => (string)$event->getDestinationAccount()->getId(),
                 'balance' => $event->getDestinationAccount()->getBalance()
             ];
         }

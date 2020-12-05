@@ -11,7 +11,7 @@ class AccountController extends AbstractController
     public function balance()
     {
         $id = $this->request->getParameter('account_id', '');
-        $account = UserFactory::getAccount()->execute($id);
+        $account = UserFactory::getAccount()->execute((int)$id);
 
         if(empty($account)) {
             $this->response->setStatusCode(HttpResponse::NOT_FOUND);

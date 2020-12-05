@@ -11,9 +11,9 @@ abstract class AbstractRepository implements RepositoryInterface
     
     protected $table;
 
-    public function find($id): ?EntityInterface
+    public function find(int $id): ?EntityInterface
     {
-        return Database::getConnection()->find($this->getTable(), (int)$id);
+        return Database::getConnection()->find($this->getTable(), $id);
     }
 
     public function save(array $data = []): ?int

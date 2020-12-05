@@ -53,4 +53,26 @@ class EventModel extends AbstractModel implements EventEntityInterface
         $this->set('amount', $amount);
         return $this;
     }
+
+    public function getOrigin(): ?int
+    {
+        return $this->get('origin');
+    }
+
+    public function setOrigin(int $origin = null): EventEntityInterface
+    {
+        $this->set('origin', $origin);
+        return $this;
+    }
+
+    public function getDestination(): ?int
+    {
+        return $this->get('destination');
+    }
+
+    public function setDestination(int $destination = null): EventEntityInterface
+    {
+        $this->set('destination', $destination);
+        return $this;
+    }
 }

@@ -49,7 +49,7 @@ class RedBean implements ConnectionInterface
             $storeId = $id;
         }
 
-        return (int)$storeId;
+        return $storeId;
     }
 
     public function update(string $table, EntityInterface $entity): ?int
@@ -86,14 +86,14 @@ class RedBean implements ConnectionInterface
         return $this->injector->make($this->getModelName($table))->fill($data);
     }
     
-    protected function getModelName(string $table)
+    protected function getModelName(string $table): string
     {
         $modelName = ucfirst($this->toSingular($table));
         
         return 'Api\Database\\'. $modelName .'Model'; 
     }
     
-    protected function toSingular(string $string)
+    protected function toSingular(string $string): string
     {
         return rtrim(strtolower($string), 's');
     }

@@ -13,9 +13,15 @@ abstract class AbstractModel implements EntityInterface
         $this->data = $data;
     }
 
-    public function getId(): ?string
+    public function getId(): ?int
     {
-        return isset($this->data['id']) ? (string)$this->data['id'] : null;
+        return isset($this->data['id']) ? (int)$this->data['id'] : null;
+    }
+
+    public function setId(int $id): EntityInterface
+    {
+        $this->set('id', $id);
+        return $this;
     }
 
     public function get(string $property)

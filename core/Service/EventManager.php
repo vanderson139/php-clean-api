@@ -9,7 +9,7 @@ class EventManager
 {
 
     /**
-     * @var EventHandlerInterface 
+     * @var EventHandlerInterface
      */
     private $handler;
 
@@ -17,9 +17,12 @@ class EventManager
     {
         if(!$this->handler) {
             $this->handler = $handler;
-        } else {
-            $this->handler->setNext($handler);
+            return $this;
         }
+        
+        $lastHandler = $this->getLastHandler();
+        
+        $lastHandler->setNext($handler);
 
         return $this;
     }
@@ -27,5 +30,16 @@ class EventManager
     public function process(EventEntityInterface $event)
     {
         return !$this->handler ?: $this->handler->handle($event);
+    }
+    
+    private function getLastHandler(): EventHandlerInterface
+    {
+        $lastHandler = $this->handler;
+
+        while ($lastHandler->hasNext()) {
+            $lastHandler = $lastHandler->getNext();
+        }
+        
+        return $lastHandler;
     }
 }

@@ -4,6 +4,12 @@ namespace Core\Adapter\Database;
 
 interface EventEntityInterface extends EntityInterface
 {
+    public function getOrigin(): ?int;
+    public function setOrigin(int $origin = null): EventEntityInterface;
+
+    public function getDestination(): ?int;
+    public function setDestination(int $destination = null): EventEntityInterface;
+    
     public function getOriginAccount(): ?AccountEntityInterface;
     public function setOriginAccount(?AccountEntityInterface $origin): ?EventEntityInterface;
     

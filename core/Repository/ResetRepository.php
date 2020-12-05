@@ -7,7 +7,7 @@ use Core\Service\Database;
 
 class ResetRepository extends AbstractRepository implements ResetRepositoryInterface
 {
-    public function drop()
+    public function drop(): bool
     {
         return Database::getConnection()->reset();
     }

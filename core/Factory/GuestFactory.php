@@ -7,7 +7,7 @@ use Core\UseCase\ResetUseCase;
 
 class GuestFactory
 {
-    public static function dropDatabase()
+    public static function dropDatabase(): ResetUseCase
     {
         return new ResetUseCase(
             new ResetRepository()

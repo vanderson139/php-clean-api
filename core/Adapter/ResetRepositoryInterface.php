@@ -4,5 +4,5 @@ namespace Core\Adapter;
 
 interface ResetRepositoryInterface extends RepositoryInterface
 {
-    public function drop();
+    public function drop(): bool;
 }

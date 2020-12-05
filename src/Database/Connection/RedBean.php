@@ -2,7 +2,10 @@
 
 namespace Api\Database\Connection;
 
+use Api\Database\Model;
 use Core\Adapter\Database\ConnectionInterface;
+use Core\Adapter\Database\EntityInterface;
+use RedBeanPHP\OODBBean;
 use RedBeanPHP\R;
 
 class RedBean implements ConnectionInterface
@@ -11,12 +14,14 @@ class RedBean implements ConnectionInterface
 
     protected static $db;
     
-    public function find(string $table, int $id)
+    public function find(string $table, int $id): ?EntityInterface
     {
-        return R::load($table, $id);
+        /** @var OODBBean $redBean */
+        $redBean = R::load($table, $id);
+        return $redBean->id ? $this->getModel($redBean->getProperties()) : null;
     }
 
-    public function save(string $table, array $data = [])
+    public function save(string $table, array $data = []): ?int
     {
         $id = null;
         if (isset($data['id'])) {
@@ -40,16 +45,17 @@ class RedBean implements ConnectionInterface
             $storeId = $id;
         }
 
-        return $storeId;
+        return (int)$storeId;
     }
 
-    public function update(string $table, $entity, array $data = [])
+    public function update(string $table, EntityInterface $entity, array $data = []): ?int
     {
-        $this->fill($entity, $data);
-        return R::store($entity);
+        $redBean = R::dispense($table);
+        $this->fill($redBean, array_merge($entity->toArray(), $data));
+        return R::store($redBean);
     }
 
-    protected function fill($entity, $data)
+    protected function fill(OODBBean $entity, array $data = []): OODBBean
     {
         foreach ($data as $key => $value) {
             $entity->{$key} = $value;
@@ -57,7 +63,7 @@ class RedBean implements ConnectionInterface
         return $entity;
     }
 
-    public function connect()
+    public function connect(): ConnectionInterface
     {
         if (!self::$db) {
             self::$db = R::setup('sqlite:' . self::DB_FILE);
@@ -65,11 +71,16 @@ class RedBean implements ConnectionInterface
         return $this;
     }
     
-    public function reset()
+    public function reset(): bool
     {
         if(file_exists(self::DB_FILE)) {
             unlink(self::DB_FILE);
         }
         return true;
+    }
+    
+    protected function getModel(array $data): EntityInterface
+    {
+        return new Model($data);
     }
 }

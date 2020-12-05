@@ -13,16 +13,16 @@ class AccountSubBalanceUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function handle($id, $amount)
+    public function handle($id, $amount): ?int
     {
         $account = $this->accountRepository->find($id);
 
-        if(empty($account->id)) {
-            return [];
+        if(empty($account)) {
+            return null;
         }
 
         return $this->accountRepository->update($account, [
-            'balance' => $account->balance - $amount
+            'balance' => $account->get('balance') - $amount
         ]);
     }
 }

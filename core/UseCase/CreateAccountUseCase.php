@@ -3,6 +3,7 @@
 namespace Core\UseCase;
 
 use Core\Adapter\AccountRepositoryInterface;
+use Core\Adapter\Database\EntityInterface;
 
 class CreateAccountUseCase
 {
@@ -13,7 +14,7 @@ class CreateAccountUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function handle($data)
+    public function handle($data): ?EntityInterface
     {
         $id = $this->accountRepository->save($data);
         return $this->accountRepository->find($id);

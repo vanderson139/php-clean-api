@@ -11,38 +11,39 @@ use Core\UseCase\AccountSubBalanceUseCase;
 use Core\UseCase\CreateAccountUseCase;
 use Core\UseCase\CreateEventUseCase;
 use Core\UseCase\GetAccountUseCase;
+use GuzzleHttp\Promise\Create;
 
 class UserFactory
 {
-    public static function getAccount()
+    public static function getAccount(): GetAccountUseCase
     {
         return new GetAccountUseCase(
             new AccountRepository()
         );
     }
 
-    public static function createAccount()
+    public static function createAccount(): CreateAccountUseCase
     {
         return new CreateAccountUseCase(
             new AccountRepository()
         );
     }
 
-    public static function accountAddBalance()
+    public static function accountAddBalance(): AccountAddBalanceUseCase
     {
         return new AccountAddBalanceUseCase(
             new AccountRepository()
         );
     }
 
-    public static function accountSubBalance()
+    public static function accountSubBalance(): AccountSubBalanceUseCase
     {
         return new AccountSubBalanceUseCase(
             new AccountRepository()
         );
     }
 
-    public static function createEvent()
+    public static function createEvent(): CreateEventUseCase
     {
         return new CreateEventUseCase(
             new EventRepository()

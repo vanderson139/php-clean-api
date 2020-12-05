@@ -2,9 +2,11 @@
 
 namespace Core\Adapter;
 
+use Core\Adapter\Database\EntityInterface;
+
 interface RepositoryInterface
 {
-    public function find($id);
-    public function save($data);
-    public function update($entity, $data);
+    public function find($id): ?EntityInterface;
+    public function save($data): ?int;
+    public function update($entity, $data): ?int;
 }

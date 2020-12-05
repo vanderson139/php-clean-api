@@ -2,6 +2,7 @@
 
 namespace Core\UseCase;
 
+use Core\Adapter\Database\EntityInterface;
 use Core\Adapter\EventRepositoryInterface;
 use Api\Enum\EventType;
 use Core\Factory\UserFactory;
@@ -15,7 +16,7 @@ class CreateEventUseCase
         $this->eventRepository = $eventRepository;
     }
 
-    public function handle($type, $originId, $destinationId, $amount)
+    public function handle($type, $originId, $destinationId, $amount): ?EntityInterface
     {
         $eventId = $this->eventRepository->save([
             'type' => $type,

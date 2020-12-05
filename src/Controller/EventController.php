@@ -10,7 +10,9 @@ use Core\Adapter\Database\EventEntityInterface;
 use Core\Factory\UserFactory;
 use Api\Serializer\ApiArraySerializer;
 use Api\Transformer\EventTransformer;
-use http\Client\Curl\User;
+use Core\Service\EventHandler\DepositEventHandler;
+use Core\Service\EventHandler\WithdrawEventHandler;
+use Core\Service\EventManager;
 use League\Fractal\Resource\Item;
 
 class EventController extends AbstractController
@@ -36,26 +38,24 @@ class EventController extends AbstractController
             ]);
         }
         
+        $eventManager = new EventManager();
+        
         switch ($post->type) {
             case EventType::WITHDRAW:
-                $success = UserFactory::accountSubBalance()->execute($origin, (float)$post->amount);
+                $eventManager->addHandler(new WithdrawEventHandler());
                 break;
             case EventType::TRANSFER:
-                $success = UserFactory::accountSubBalance()->execute($origin, (float)$post->amount);
-                $success = UserFactory::accountAddBalance()->execute($destination, (float)$post->amount);
+                $eventManager->addHandler(new WithdrawEventHandler())
+                             ->addHandler(new DepositEventHandler());
                 break;
             default:
-                $success = UserFactory::accountAddBalance()->execute($destination, (float)$post->amount);
+                $eventManager->addHandler(new DepositEventHandler());
                 break;
-        }
-
-        if(!$success) {
-            $this->response->setStatusCode(HttpResponse::NOT_FOUND);
-            $this->response->setContent('0');
-            return;
         }
         
         $event = UserFactory::createEvent()->execute($post->type, (float)$post->amount, $destination, $origin);
+        
+        $eventManager->process($event);
 
         $data = $this->formatResponse($event);
 
@@ -63,7 +63,7 @@ class EventController extends AbstractController
         $this->response->setContent($data);
     }
     
-    protected function isOriginRequired($type)
+    protected function isOriginRequired($type): bool
     {
         return in_array($type, [
            EventType::WITHDRAW, 
@@ -89,7 +89,7 @@ class EventController extends AbstractController
         return UserFactory::createAccount()->execute(new AccountModel($data));
     }
 
-    protected function formatResponse(EventEntityInterface $event)
+    protected function formatResponse(EventEntityInterface $event): string
     {
         $resource = new Item($event, new EventTransformer());
 

@@ -9,7 +9,7 @@ class ResetController extends AbstractController
 {
     public function drop()
     {
-        GuestFactory::dropDatabase()->handle();
+        GuestFactory::dropDatabase()->execute();
         $this->response->setStatusCode(HttpResponse::OK);
         $this->response->setContent('OK');
     }

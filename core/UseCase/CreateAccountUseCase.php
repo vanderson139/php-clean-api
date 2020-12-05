@@ -15,9 +15,9 @@ class CreateAccountUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function handle(array $data): ?AccountEntityInterface
+    public function execute(AccountEntityInterface $account): ?AccountEntityInterface
     {
-        $id = $this->accountRepository->save($data);
+        $id = $this->accountRepository->save($account->toArray());
         return $this->accountRepository->find($id);
     }
 }

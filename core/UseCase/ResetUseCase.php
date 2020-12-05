@@ -13,7 +13,7 @@ class ResetUseCase
         $this->resetRepository = $resetRepository;
     }
 
-    public function handle()
+    public function execute()
     {
         $this->resetRepository->drop();
     }

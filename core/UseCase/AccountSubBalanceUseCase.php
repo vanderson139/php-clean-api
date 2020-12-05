@@ -14,7 +14,7 @@ class AccountSubBalanceUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function handle(AccountEntityInterface $account, float $amount): bool
+    public function execute(AccountEntityInterface $account, float $amount): bool
     {
         $account->subBalance($amount);
 

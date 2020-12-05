@@ -15,7 +15,7 @@ class GetAccountUseCase
         $this->accountRepository = $accountRepository;
     }
 
-    public function handle(string $id): ?AccountEntityInterface
+    public function execute(string $id): ?AccountEntityInterface
     {
         return $this->accountRepository->find($id);
     }

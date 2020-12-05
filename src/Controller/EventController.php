@@ -2,6 +2,7 @@
 
 namespace Api\Controller;
 
+use Api\Database\AccountModel;
 use Api\Enum\EventType;
 use Api\Enum\HttpResponse;
 use Core\Adapter\Database\AccountEntityInterface;
@@ -37,14 +38,14 @@ class EventController extends AbstractController
         
         switch ($post->type) {
             case EventType::WITHDRAW:
-                $success = UserFactory::accountSubBalance()->handle($origin, (float)$post->amount);
+                $success = UserFactory::accountSubBalance()->execute($origin, (float)$post->amount);
                 break;
             case EventType::TRANSFER:
-                $success = UserFactory::accountSubBalance()->handle($origin, (float)$post->amount);
-                $success = UserFactory::accountAddBalance()->handle($destination, (float)$post->amount);
+                $success = UserFactory::accountSubBalance()->execute($origin, (float)$post->amount);
+                $success = UserFactory::accountAddBalance()->execute($destination, (float)$post->amount);
                 break;
             default:
-                $success = UserFactory::accountAddBalance()->handle($destination, (float)$post->amount);
+                $success = UserFactory::accountAddBalance()->execute($destination, (float)$post->amount);
                 break;
         }
 
@@ -54,7 +55,7 @@ class EventController extends AbstractController
             return;
         }
         
-        $event = UserFactory::createEvent()->handle($post->type, (float)$post->amount, $destination, $origin);
+        $event = UserFactory::createEvent()->execute($post->type, (float)$post->amount, $destination, $origin);
 
         $data = $this->formatResponse($event);
 
@@ -80,12 +81,12 @@ class EventController extends AbstractController
 
     protected function getAccount($id): ?AccountEntityInterface
     {
-        return $id ? UserFactory::getAccount()->handle($id) : null;
+        return $id ? UserFactory::getAccount()->execute($id) : null;
     }
 
     protected function createAccount($data): ?AccountEntityInterface
     {
-        return UserFactory::createAccount()->handle($data);
+        return UserFactory::createAccount()->execute(new AccountModel($data));
     }
 
     protected function formatResponse(EventEntityInterface $event)

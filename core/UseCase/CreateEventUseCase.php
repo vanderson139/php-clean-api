@@ -3,11 +3,8 @@
 namespace Core\UseCase;
 
 use Core\Adapter\Database\AccountEntityInterface;
-use Core\Adapter\Database\EntityInterface;
 use Core\Adapter\Database\EventEntityInterface;
 use Core\Adapter\Repository\EventRepositoryInterface;
-use Api\Enum\EventType;
-use Core\Factory\UserFactory;
 
 class CreateEventUseCase
 {
@@ -18,7 +15,7 @@ class CreateEventUseCase
         $this->eventRepository = $eventRepository;
     }
 
-    public function handle(string $type, float $amount, ?AccountEntityInterface $destination = null, ?AccountEntityInterface $origin = null): ?EventEntityInterface
+    public function execute(string $type, float $amount, ?AccountEntityInterface $destination = null, ?AccountEntityInterface $origin = null): ?EventEntityInterface
     {
         $eventId = $this->eventRepository->save([
             'type' => $type,

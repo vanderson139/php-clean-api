@@ -2,7 +2,7 @@
 
 namespace Core\UseCase;
 
-use Core\Adapter\AccountRepositoryInterface;
+use Core\Adapter\Repository\AccountRepositoryInterface;
 use Core\Adapter\Database\EntityInterface;
 
 class GetAccountUseCase

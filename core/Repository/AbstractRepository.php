@@ -3,7 +3,7 @@
 namespace Core\Repository;
 
 use Core\Adapter\Database\EntityInterface;
-use Core\Adapter\RepositoryInterface;
+use Core\Adapter\Repository\RepositoryInterface;
 use Core\Service\Database;
 
 abstract class AbstractRepository implements RepositoryInterface
@@ -16,12 +16,12 @@ abstract class AbstractRepository implements RepositoryInterface
         return Database::getConnection()->find($this->getTable(), (int)$id);
     }
 
-    public function save($data): ?int
+    public function save(array $data = []): ?int
     {
         return Database::getConnection()->save($this->getTable(), $data);
     }
 
-    public function update($entity, $data): ?int
+    public function update(EntityInterface $entity, array $data = []): ?int
     {
         return Database::getConnection()->update($this->getTable(), $entity, $data);
     }

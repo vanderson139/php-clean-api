@@ -4,7 +4,7 @@ namespace Api\Database;
 
 use Core\Adapter\Database\EntityInterface;
 
-class Model implements EntityInterface
+abstract class AbstractModel implements EntityInterface
 {
     protected $data = [];
     
@@ -32,5 +32,12 @@ class Model implements EntityInterface
     public function toArray(): array
     {
         return $this->data;
+    }
+
+    public function fill(array $data = []): EntityInterface
+    {
+        $this->data = $data;
+        
+        return $this;
     }
 }

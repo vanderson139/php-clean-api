@@ -2,7 +2,7 @@
 
 namespace Core\Repository;
 
-use Core\Adapter\ResetRepositoryInterface;
+use Core\Adapter\Repository\ResetRepositoryInterface;
 use Core\Service\Database;
 
 class ResetRepository extends AbstractRepository implements ResetRepositoryInterface

@@ -7,5 +7,6 @@ interface EntityInterface
     public function getId(): ?string;
     public function get(string $property);
     public function set($property, $value): EntityInterface;
+    public function fill(array $data = []): EntityInterface;
     public function toArray(): array;
 }

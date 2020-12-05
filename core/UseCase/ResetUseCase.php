@@ -2,7 +2,7 @@
 
 namespace Core\UseCase;
 
-use Core\Adapter\ResetRepositoryInterface;
+use Core\Adapter\Repository\ResetRepositoryInterface;
 
 class ResetUseCase
 {

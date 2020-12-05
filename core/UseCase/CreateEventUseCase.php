@@ -3,7 +3,7 @@
 namespace Core\UseCase;
 
 use Core\Adapter\Database\EntityInterface;
-use Core\Adapter\EventRepositoryInterface;
+use Core\Adapter\Repository\EventRepositoryInterface;
 use Api\Enum\EventType;
 use Core\Factory\UserFactory;
 

@@ -2,7 +2,6 @@
 
 namespace Api\Database\Connection;
 
-use Api\Database\Model;
 use Core\Adapter\Database\ConnectionInterface;
 use Core\Adapter\Database\EntityInterface;
 use RedBeanPHP\OODBBean;
@@ -11,14 +10,19 @@ use RedBeanPHP\R;
 class RedBean implements ConnectionInterface
 {
     const DB_FILE = '/tmp/dbfile.db';
-
-    protected static $db;
     
+    protected $injector;
+    
+    public function __construct(\Auryn\Injector $injector)
+    {
+        $this->injector = $injector;
+    }
+
     public function find(string $table, int $id): ?EntityInterface
     {
         /** @var OODBBean $redBean */
         $redBean = R::load($table, $id);
-        return $redBean->id ? $this->getModel($redBean->getProperties()) : null;
+        return $redBean->id ? $this->getModel($table, $redBean->getProperties()) : null;
     }
 
     public function save(string $table, array $data = []): ?int
@@ -65,9 +69,7 @@ class RedBean implements ConnectionInterface
 
     public function connect(): ConnectionInterface
     {
-        if (!self::$db) {
-            self::$db = R::setup('sqlite:' . self::DB_FILE);
-        }
+        R::setup('sqlite:' . self::DB_FILE);
         return $this;
     }
     
@@ -79,8 +81,20 @@ class RedBean implements ConnectionInterface
         return true;
     }
     
-    protected function getModel(array $data): EntityInterface
+    protected function getModel(string $table, array $data): EntityInterface
     {
-        return new Model($data);
+        return $this->injector->make($this->getModelName($table))->fill($data);
+    }
+    
+    protected function getModelName(string $table)
+    {
+        $modelName = ucfirst($this->toSingular($table));
+        
+        return 'Api\Database\\'. $modelName .'Model'; 
+    }
+    
+    protected function toSingular(string $string)
+    {
+        return rtrim(strtolower($string), 's');
     }
 }

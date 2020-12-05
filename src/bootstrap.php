@@ -2,7 +2,7 @@
 
 $app = include('app.php');
 
-\Core\Service\Database::connect(new \Api\Database\Connection\RedBean());
+\Core\Service\Database::connect(new \Api\Database\Connection\RedBean($app));
 
 $request = $app->make('Http\HttpRequest');
 $response = $app->make('Http\HttpResponse');

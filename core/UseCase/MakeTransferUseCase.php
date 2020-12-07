@@ -20,11 +20,15 @@ class MakeTransferUseCase
 
     public function execute(EventEntityInterface $event): ?EventEntityInterface
     {
-        $this->eventManager->addHandler(new CreateDestinationAccountEventHandler())
-            ->addHandler(new MakeWithdrawEventHandler())
-            ->addHandler(new MakeDepositEventHandler())
-            ->addHandler(new CreateEventHandler())
-            ->process($event);
+        try {
+            $this->eventManager->addHandler(new CreateDestinationAccountEventHandler())
+                ->addHandler(new MakeWithdrawEventHandler())
+                ->addHandler(new MakeDepositEventHandler())
+                ->addHandler(new CreateEventHandler())
+                ->process($event);
+        } catch(\InvalidArgumentException $e) {
+            return null;
+        }
         
         return $event;
     }

@@ -22,9 +22,7 @@ class EventController extends AbstractController
         $origin = $this->getAccount((int)$post->origin);
 
         if ($this->isOriginRequired($post->type) && empty($origin)) {
-            $this->response->setStatusCode(HttpResponse::NOT_FOUND);
-            $this->response->setContent('0');
-            return;
+            return $this->emptyResponse();
         }
 
         $event = (new EventModel())
@@ -35,14 +33,18 @@ class EventController extends AbstractController
 
         switch ($post->type) {
             case EventType::WITHDRAW:
-                UserFactory::makeWithdraw()->execute($event);
+                $event = UserFactory::makeWithdraw()->execute($event);
                 break;
             case EventType::TRANSFER:
-                UserFactory::makeTransfer()->execute($event);
+                $event = UserFactory::makeTransfer()->execute($event);
                 break;
             default:
-                UserFactory::makeDeposit()->execute($event);
+                $event = UserFactory::makeDeposit()->execute($event);
                 break;
+        }
+        
+        if(!$event) {
+            return $this->emptyResponse();
         }
 
         $data = $this->formatResponse($event);
@@ -71,5 +73,11 @@ class EventController extends AbstractController
         $this->fractal->setSerializer(new ApiArraySerializer());
 
         return $this->fractal->createData($resource)->toJson();
+    }
+    
+    protected function emptyResponse()
+    {
+        $this->response->setStatusCode(HttpResponse::NOT_FOUND);
+        $this->response->setContent('0');
     }
 }

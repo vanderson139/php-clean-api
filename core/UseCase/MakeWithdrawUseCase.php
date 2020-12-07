@@ -18,9 +18,13 @@ class MakeWithdrawUseCase
 
     public function execute(EventEntityInterface $event): ?EventEntityInterface
     {
-        $this->eventManager->addHandler(new MakeWithdrawEventHandler())
-            ->addHandler(new CreateEventHandler())
-            ->process($event);
+        try {
+            $this->eventManager->addHandler(new MakeWithdrawEventHandler())
+                ->addHandler(new CreateEventHandler())
+                ->process($event);
+        } catch(\InvalidArgumentException $e) {
+            return null;
+        }
         
         return $event;
     }

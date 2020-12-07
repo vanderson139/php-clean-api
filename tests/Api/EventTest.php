@@ -135,4 +135,24 @@ class EventTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('0', $response->getBody()->getContents());
     }
+
+    public function testWithdrawMoreThanAvailable()
+    {
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/',
+            'http_errors' => false
+        ]);
+
+        $options = [
+            RequestOptions::JSON => [
+                'type' => 'withdraw',
+                'origin' => '100',
+                'amount' => '1000',
+            ]
+        ];
+        $response = $client->post('/event', $options);
+
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('0', $response->getBody()->getContents());
+    }
 }

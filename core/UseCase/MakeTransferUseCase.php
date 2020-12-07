@@ -3,6 +3,7 @@
 namespace Core\UseCase;
 
 use Core\Adapter\Database\EventEntityInterface;
+use Core\EventHandler\CheckOriginAccountExistsEventHandler;
 use Core\EventHandler\CreateDestinationAccountEventHandler;
 use Core\EventHandler\CreateEventHandler;
 use Core\EventHandler\MakeDepositEventHandler;
@@ -20,11 +21,17 @@ class MakeTransferUseCase
 
     public function execute(EventEntityInterface $event): ?EventEntityInterface
     {
-        $this->eventManager->addHandler(new CreateDestinationAccountEventHandler())
-            ->addHandler(new MakeWithdrawEventHandler())
-            ->addHandler(new MakeDepositEventHandler())
-            ->addHandler(new CreateEventHandler())
-            ->process($event);
+        try {
+            $this->eventManager
+                ->addHandler(new CheckOriginAccountExistsEventHandler())
+                ->addHandler(new CreateDestinationAccountEventHandler())
+                ->addHandler(new MakeWithdrawEventHandler())
+                ->addHandler(new MakeDepositEventHandler())
+                ->addHandler(new CreateEventHandler())
+                ->process($event);
+        } catch(\InvalidArgumentException $e) {
+            return null;
+        }
         
         return $event;
     }

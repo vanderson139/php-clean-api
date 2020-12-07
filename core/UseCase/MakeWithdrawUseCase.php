@@ -3,6 +3,7 @@
 namespace Core\UseCase;
 
 use Core\Adapter\Database\EventEntityInterface;
+use Core\EventHandler\CheckOriginAccountExistsEventHandler;
 use Core\EventHandler\CreateEventHandler;
 use Core\EventHandler\MakeWithdrawEventHandler;
 use Core\Service\EventProcessor;
@@ -18,9 +19,15 @@ class MakeWithdrawUseCase
 
     public function execute(EventEntityInterface $event): ?EventEntityInterface
     {
-        $this->eventManager->addHandler(new MakeWithdrawEventHandler())
-            ->addHandler(new CreateEventHandler())
-            ->process($event);
+        try {
+            $this->eventManager
+                ->addHandler(new CheckOriginAccountExistsEventHandler())
+                ->addHandler(new MakeWithdrawEventHandler())
+                ->addHandler(new CreateEventHandler())
+                ->process($event);
+        } catch(\InvalidArgumentException $e) {
+            return null;
+        }
         
         return $event;
     }

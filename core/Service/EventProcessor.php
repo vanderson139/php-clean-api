@@ -5,7 +5,7 @@ namespace Core\Service;
 use Core\Adapter\Database\EventEntityInterface;
 use Core\Adapter\EventHandlerInterface;
 
-class EventManager
+class EventProcessor
 {
 
     /**

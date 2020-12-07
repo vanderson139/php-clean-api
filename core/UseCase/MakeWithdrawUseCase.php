@@ -3,15 +3,15 @@
 namespace Core\UseCase;
 
 use Core\Adapter\Database\EventEntityInterface;
-use Core\Service\EventHandler\CreateEventHandler;
-use Core\Service\EventHandler\WithdrawEventHandler;
-use Core\Service\EventManager;
+use Core\EventHandler\CreateEventHandler;
+use Core\EventHandler\WithdrawEventHandler;
+use Core\Service\EventProcessor;
 
 class MakeWithdrawUseCase
 {
     protected $eventManager;
 
-    public function __construct(EventManager $eventManager)
+    public function __construct(EventProcessor $eventManager)
     {
         $this->eventManager = $eventManager;
     }

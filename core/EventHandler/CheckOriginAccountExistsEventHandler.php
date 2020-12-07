@@ -14,7 +14,7 @@ class CheckOriginAccountExistsEventHandler extends AbstractEventHandler
             $account = UserFactory::getAccount()->execute($event->getOrigin());
 
             if(!$account) {
-                throw new \InvalidArgumentException("Origin account does not exist!");
+                throw new \InvalidArgumentException("Origin account not found!");
             }
 
             $event->setOriginAccount($account);

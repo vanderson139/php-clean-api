@@ -8,22 +8,32 @@ use PHPUnit\Framework\TestCase;
 
 class EventTest extends TestCase
 {
-    public function testCreateAccountWithInitialBalance()
+    protected function getClient()
     {
-        $client = new Client([
+        return new Client([
             'base_uri' => 'http://localhost:8000/',
             'http_errors' => false
         ]);
-        
+    }
+
+    protected function createAccount($id, $balance = 0)
+    {
+        $client = $this->getClient();
+
         $options = [
             RequestOptions::JSON => [
                 'type' => 'deposit',
-                'destination' => '100',
-                'amount' => '10',
+                'destination' => $id,
+                'amount' => $balance,
             ]
         ];
-        $response = $client->post('/event', $options);
+        return $client->post('/event', $options);
+    }
 
+    public function testCreateAccountWithInitialBalance()
+    {
+        $response = $this->createAccount(100, 10);
+        
         $this->assertEquals(201, $response->getStatusCode());
         
         $expectedBody = '{"destination":{"id":"100","balance":10}}';
@@ -32,37 +42,33 @@ class EventTest extends TestCase
 
     public function testDepositIntoExistingAccount()
     {
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/',
-            'http_errors' => false
-        ]);
+        $client = $this->getClient();
+
+        $this->createAccount(200);
 
         $options = [
             RequestOptions::JSON => [
                 'type' => 'deposit',
-                'destination' => '100',
-                'amount' => '10',
+                'destination' => '200',
+                'amount' => '100',
             ]
         ];
         $response = $client->post('/event', $options);
 
         $this->assertEquals(201, $response->getStatusCode());
 
-        $expectedBody = '{"destination":{"id":"100","balance":20}}';
+        $expectedBody = '{"destination":{"id":"200","balance":100}}';
         $this->assertEquals($expectedBody, $response->getBody()->getContents());
     }
 
     public function testWithdrawFromNonExistingAccount()
     {
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/',
-            'http_errors' => false
-        ]);
+        $client = $this->getClient();
 
         $options = [
             RequestOptions::JSON => [
                 'type' => 'withdraw',
-                'origin' => '200',
+                'origin' => '1234',
                 'amount' => '10',
             ]
         ];
@@ -74,58 +80,53 @@ class EventTest extends TestCase
 
     public function testWithdrawFromExistingAccount()
     {
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/',
-            'http_errors' => false
-        ]);
+        $client = $this->getClient();
+
+        $this->createAccount(300, 100);
 
         $options = [
             RequestOptions::JSON => [
                 'type' => 'withdraw',
-                'origin' => '100',
+                'origin' => '300',
                 'amount' => '5',
             ]
         ];
         $response = $client->post('/event', $options);
 
         $this->assertEquals(201, $response->getStatusCode());
-        $expectedBody = '{"origin":{"id":"100","balance":15}}';
+        $expectedBody = '{"origin":{"id":"300","balance":95}}';
         $this->assertEquals($expectedBody, $response->getBody()->getContents());
     }
 
     public function testTransferFromExistingAccount()
     {
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/',
-            'http_errors' => false
-        ]);
+        $client = $this->getClient();
+
+        $this->createAccount(400, 100);
 
         $options = [
             RequestOptions::JSON => [
                 'type' => 'transfer',
-                'origin' => '100',
+                'origin' => '400',
                 'amount' => '15',
-                'destination' => '300',
+                'destination' => '500',
             ]
         ];
         $response = $client->post('/event', $options);
 
         $this->assertEquals(201, $response->getStatusCode());
-        $expectedBody = '{"origin":{"id":"100","balance":0},"destination":{"id":"300","balance":15}}';
+        $expectedBody = '{"origin":{"id":"400","balance":85},"destination":{"id":"500","balance":15}}';
         $this->assertEquals($expectedBody, $response->getBody()->getContents());
     }
 
     public function testTransferFromNonExistingAccount()
     {
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/',
-            'http_errors' => false
-        ]);
+        $client = $this->getClient();
 
         $options = [
             RequestOptions::JSON => [
                 'type' => 'transfer',
-                'origin' => '200',
+                'origin' => '600',
                 'amount' => '15',
                 'destination' => '300',
             ]
@@ -136,23 +137,42 @@ class EventTest extends TestCase
         $this->assertEquals('0', $response->getBody()->getContents());
     }
 
-    public function testWithdrawMoreThanAvailable()
+    public function testShouldNotWithdrawMoreThanAvailable()
     {
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/',
-            'http_errors' => false
-        ]);
+        $client = $this->getClient();
+
+        $this->createAccount(600, 10);
 
         $options = [
             RequestOptions::JSON => [
                 'type' => 'withdraw',
-                'origin' => '100',
-                'amount' => '1000',
+                'origin' => '600',
+                'amount' => '3',
             ]
         ];
         $response = $client->post('/event', $options);
 
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('0', $response->getBody()->getContents());
+    }
+
+    public function testShouldWithdrawOnlyBelowLimit()
+    {
+        $client = $this->getClient();
+
+        $this->createAccount(700, 10);
+
+        $options = [
+            RequestOptions::JSON => [
+                'type' => 'withdraw',
+                'origin' => '700',
+                'amount' => '2',
+            ]
+        ];
+        $response = $client->post('/event', $options);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $expectedBody = '{"origin":{"id":"700","balance":8}}';
+        $this->assertEquals($expectedBody, $response->getBody()->getContents());
     }
 }

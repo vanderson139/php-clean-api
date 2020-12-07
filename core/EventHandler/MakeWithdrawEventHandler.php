@@ -9,6 +9,8 @@ use Core\Factory\UserFactory;
 
 class MakeWithdrawEventHandler extends AbstractEventHandler
 {
+    const WITHDRAW_LIMIT_PERCENT = 0.2;
+
     public function handle(EventEntityInterface $event): ?EventHandlerInterface
     {
         $account = $event->getOriginAccount();
@@ -31,6 +33,7 @@ class MakeWithdrawEventHandler extends AbstractEventHandler
     
     protected function canWithdraw(AccountEntityInterface $account, float $amount): bool
     {
-        return $account->getBalance() >= $amount;
+        $limit = $account->getBalance() * self::WITHDRAW_LIMIT_PERCENT;
+        return $limit >= $amount;
     }
 }

@@ -3,10 +3,10 @@
 namespace Core\UseCase;
 
 use Core\Adapter\Database\EventEntityInterface;
-use Core\EventHandler\CreateAccountEventHandler;
+use Core\EventHandler\CreateDestinationAccountEventHandler;
 use Core\EventHandler\CreateEventHandler;
-use Core\EventHandler\DepositEventHandler;
-use Core\EventHandler\WithdrawEventHandler;
+use Core\EventHandler\MakeDepositEventHandler;
+use Core\EventHandler\MakeWithdrawEventHandler;
 use Core\Service\EventProcessor;
 
 class MakeTransferUseCase
@@ -20,9 +20,9 @@ class MakeTransferUseCase
 
     public function execute(EventEntityInterface $event): ?EventEntityInterface
     {
-        $this->eventManager->addHandler(new CreateAccountEventHandler())
-            ->addHandler(new WithdrawEventHandler())
-            ->addHandler(new DepositEventHandler())
+        $this->eventManager->addHandler(new CreateDestinationAccountEventHandler())
+            ->addHandler(new MakeWithdrawEventHandler())
+            ->addHandler(new MakeDepositEventHandler())
             ->addHandler(new CreateEventHandler())
             ->process($event);
         

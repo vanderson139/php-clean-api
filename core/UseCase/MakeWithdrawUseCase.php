@@ -4,7 +4,7 @@ namespace Core\UseCase;
 
 use Core\Adapter\Database\EventEntityInterface;
 use Core\EventHandler\CreateEventHandler;
-use Core\EventHandler\WithdrawEventHandler;
+use Core\EventHandler\MakeWithdrawEventHandler;
 use Core\Service\EventProcessor;
 
 class MakeWithdrawUseCase
@@ -18,7 +18,7 @@ class MakeWithdrawUseCase
 
     public function execute(EventEntityInterface $event): ?EventEntityInterface
     {
-        $this->eventManager->addHandler(new WithdrawEventHandler())
+        $this->eventManager->addHandler(new MakeWithdrawEventHandler())
             ->addHandler(new CreateEventHandler())
             ->process($event);
         

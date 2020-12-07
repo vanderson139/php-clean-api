@@ -6,7 +6,7 @@ use Core\Adapter\Database\EventEntityInterface;
 use Core\Adapter\EventHandlerInterface;
 use Core\Factory\UserFactory;
 
-class DepositEventHandler extends AbstractEventHandler
+class MakeDepositEventHandler extends AbstractEventHandler
 {
     public function handle(EventEntityInterface $event): ?EventHandlerInterface
     {

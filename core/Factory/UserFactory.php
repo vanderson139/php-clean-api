@@ -5,7 +5,7 @@ namespace Core\Factory;
 use Core\Repository\EventRepository;
 use Core\Repository\AccountRepository;
 
-use Core\Service\EventManager;
+use Core\Service\EventProcessor;
 
 use Core\UseCase\AccountAddBalanceUseCase;
 use Core\UseCase\AccountSubBalanceUseCase;
@@ -56,21 +56,21 @@ class UserFactory
     public static function makeDeposit(): MakeDepositUseCase
     {
         return new MakeDepositUseCase(
-            new EventManager()
+            new EventProcessor()
         );
     }
 
     public static function makeWithdraw(): MakeWithdrawUseCase
     {
         return new MakeWithdrawUseCase(
-            new EventManager()
+            new EventProcessor()
         );
     }
 
     public static function makeTransfer(): MakeTransferUseCase
     {
         return new MakeTransferUseCase(
-            new EventManager()
+            new EventProcessor()
         );
     }
 }

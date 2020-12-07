@@ -3,17 +3,17 @@
 namespace Core\UseCase;
 
 use Core\Adapter\Database\EventEntityInterface;
-use Core\Service\EventHandler\CreateAccountEventHandler;
-use Core\Service\EventHandler\CreateEventHandler;
-use Core\Service\EventHandler\DepositEventHandler;
-use Core\Service\EventHandler\WithdrawEventHandler;
-use Core\Service\EventManager;
+use Core\EventHandler\CreateAccountEventHandler;
+use Core\EventHandler\CreateEventHandler;
+use Core\EventHandler\DepositEventHandler;
+use Core\EventHandler\WithdrawEventHandler;
+use Core\Service\EventProcessor;
 
 class MakeTransferUseCase
 {
     protected $eventManager;
 
-    public function __construct(EventManager $eventManager)
+    public function __construct(EventProcessor $eventManager)
     {
         $this->eventManager = $eventManager;
     }
